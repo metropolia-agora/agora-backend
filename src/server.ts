@@ -16,7 +16,7 @@ app.use(cors());
 app.options('*', cors());
 
 // Health check endpoint
-app.get('/', (req: Request, res: Response) => {
+app.get('/api', (req: Request, res: Response) => {
   res.status(200).send('API is running.');
 });
 
