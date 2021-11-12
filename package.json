@@ -6,8 +6,13 @@
     "dev": "nodemon src/server.ts",
     "prod": "npm run build && node dist/server.js",
     "build": "rimraf dist && tsc",
+    "lint": "eslint . --ext .ts && tsc --noEmit",
     "api": "npx -y redoc-cli serve docs/api.yaml",
     "api:dev": "npx -y redoc-cli serve docs/api.yaml --watch"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   },
   "dependencies": {
     "@casl/ability": "^5.4.3",
