@@ -63,6 +63,11 @@ npm run prod
 http://localhost:5000/api
 ```
 
+**7. (optional)** Run ESLint code style check at any time during development
+```bash
+npm run lint
+```
+
 ## API documentation
 
 For an exhaustive list of all available API endpoints, authorization information, request and response parameters, as well as request and response samples view the API documentation written in OpenAPI 3 format at `docs/api.yaml`. To run a user-friendly API documentation server using `redoc-cli` run the following command:
