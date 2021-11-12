@@ -1,0 +1,11 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  description: |
+    Technical documentation of endpoints in OpenAPI 3 format.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
