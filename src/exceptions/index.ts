@@ -1,4 +1,4 @@
-export { BadRequestException } from './BadRequestException';
-export { ForbiddenException } from './ForbiddenException';
-export { InternalServerException } from './InternalServerException';
-export { NotFoundException } from './NotFoundException';
+export * from './BadRequestException';
+export * from './ForbiddenException';
+export * from './HttpException';
+export * from './NotFoundException';
