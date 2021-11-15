@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import { errorHandler } from './middlewares';
 
 // Create express app
 const app = express();
@@ -19,6 +20,9 @@ app.options('*', cors());
 app.get('/api', (req: Request, res: Response) => {
   res.status(200).send('API is running.');
 });
+
+// Attach error handler
+app.use(errorHandler);
 
 // Start listening to incoming requests
 const server = app.listen(port, () => console.log(`Server listening on port ${port}.`));
