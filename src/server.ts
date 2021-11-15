@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import { userRouter } from './routes';
 import { errorHandler } from './middlewares';
 
 // Create express app
@@ -20,6 +21,9 @@ app.options('*', cors());
 app.get('/api', (req: Request, res: Response) => {
   res.status(200).send('API is running.');
 });
+
+// Attach api routers
+app.use('/api/users', userRouter);
 
 // Attach error handler
 app.use(errorHandler);

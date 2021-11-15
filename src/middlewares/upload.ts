@@ -1,6 +1,6 @@
 import multer from 'multer';
 
-export const FileType = {
+export const FileTypes = {
   audio: 'audio',
   image: 'image',
   video: 'video',
@@ -15,10 +15,10 @@ export const upload = (allowedFileTypes: string[]) => multer({
   limits: {
     fileSize: 10485760,
   },
-  // Filter out files that are not audio, image, or video
+  // Filter out files that are not allowed
   fileFilter(req, file, callback) {
     const fileCategory = file.mimetype.split('/')[0];
-    const isSupported = allowedFileTypes.includes(fileCategory);
-    callback(null, isSupported);
+    const isAllowed = allowedFileTypes.includes(fileCategory);
+    callback(null, isAllowed);
   },
 });
