@@ -1,11 +1,12 @@
 import mariadb from 'mariadb';
+import { env } from './env';
 
 const pool = mariadb.createPool({
-  host: process.env.MARIADB_HOST,
   port: 3306,
-  user: process.env.MARIADB_USER,
-  password: process.env.MARIADB_PASSWORD,
-  database: process.env.MARIADB_DATABASE,
+  host: env.getMariadbHost(),
+  user: env.getMariadbUser(),
+  password: env.getMariadbPassword(),
+  database: env.getMariadbDatabase(),
 });
 
 const db = Object.freeze({ pool });

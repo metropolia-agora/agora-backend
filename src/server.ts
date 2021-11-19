@@ -1,14 +1,14 @@
-import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { userRouter } from './routes';
 import { errorHandler } from './middlewares';
+import { env } from './utils';
 
 // Create express app
 const app = express();
 
-// Get port from env or use default 5000
-const port = process.env.PORT || 5000;
+// Get port from env
+const port = env.getPort();
 
 // Set up JSON body parsing
 app.use(express.json());
