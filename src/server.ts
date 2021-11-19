@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { userRouter } from './routes';
-import { errorHandler } from './middlewares';
+import { authentication, errorHandler } from './middlewares';
 import { env } from './utils';
 
 // Create express app
@@ -22,10 +22,13 @@ app.get('/api', (req: Request, res: Response) => {
   res.status(200).send('API is running.');
 });
 
+// Attach authentication middleware
+app.use(authentication);
+
 // Attach api routers
 app.use('/api/users', userRouter);
 
-// Attach error handler
+// Attach error handler middleware
 app.use(errorHandler);
 
 // Start listening to incoming requests
