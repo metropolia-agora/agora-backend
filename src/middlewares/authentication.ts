@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 import { UserService } from '../services';
 import { UnauthorizedException } from '../exceptions';
@@ -28,13 +28,12 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
             return next(new UnauthorizedException('Authorization token invalid.'));
           } else {
             // Verify that the token belongs to an existing user
-            const user = await UserService.findUserById(decoded.userId);
-            if (!user) {
-              return next(new UnauthorizedException('Authorization token invalid.'));
-            } else {
+            try {
               // Continue as an authenticated user
-              req.user = user;
+              req.user = await UserService.findUserById(decoded.userId);
               return next();
+            } catch (error) {
+              return next(new UnauthorizedException('Authorization token invalid.'));
             }
           }
         });

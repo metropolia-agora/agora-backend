@@ -41,7 +41,7 @@ export class UserService {
     if (!user) {
       throw new BadRequestException('Invalid username or password.');
     } else {
-      const doPasswordsMatch = await bcrypt.compare(user.password, password);
+      const doPasswordsMatch = await bcrypt.compare(password, user.password);
       if (!doPasswordsMatch) {
         throw new BadRequestException('Invalid username or password.');
       } else {
@@ -83,6 +83,7 @@ export class UserService {
       minLowercase: 1,
       minUppercase: 1,
       minNumbers: 1,
+      minSymbols: 0,
     };
     if (!validator.isStrongPassword(password, passwordPolicy)) {
       return 'The password is too weak.';
