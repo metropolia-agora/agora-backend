@@ -6,18 +6,20 @@ export enum UserType {
   admin,
 }
 
-// Unauthenticated anonymous user
-export interface AnonymousUser {
+export class AnonymousUser {
   // User type (anonymous)
   type: UserType.anonymous;
+
+  constructor() {
+    this.type = UserType.anonymous;
+  }
 }
 
-// Authenticated user
-export interface User {
+export class User {
   // UUIDv4 universally unique identifier
   id: string;
   // User type (regular, moderator, or admin)
-  type: UserType.regular | UserType.moderator | UserType.admin,
+  type: UserType.regular | UserType.moderator | UserType.admin;
   // Unique username
   username: string;
   // Hashed password
@@ -28,4 +30,8 @@ export interface User {
   createdAt: Date;
   // Date of last modification
   updatedAt: Date;
+
+  constructor(data: User) {
+    Object.assign(this, data);
+  }
 }

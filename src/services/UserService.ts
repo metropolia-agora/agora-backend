@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import validator from 'validator';
 import { v4 as uuid4 } from 'uuid';
 import { UserRepository } from '../repository';
-import { User, UserType } from '../types';
+import { User, UserType } from '../entities';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { env } from '../utils';
 

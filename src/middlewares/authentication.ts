@@ -3,7 +3,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { UserService } from '../services';
 import { UnauthorizedException } from '../exceptions';
 import { env } from '../utils';
-import { UserType } from '../types';
+import { AnonymousUser } from '../entities';
 
 // Express middleware to authenticate incoming requests, deny access to users with invalid tokens,
 // and set the `req.user` property to either an existing or an anonymous user.
@@ -13,7 +13,7 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
     const authorizationHeader = req.headers.authorization;
     if (!authorizationHeader) {
       // Continue as an anonymous user if the header is not present
-      req.user = { type: UserType.anonymous };
+      req.user = new AnonymousUser();
       return next();
     } else {
       // Validate the token to be of the expected `Bearer jwt_token` format

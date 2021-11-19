@@ -1,5 +1,6 @@
 import multer from 'multer';
 
+// File types
 export const FileTypes = {
   audio: 'audio',
   image: 'image',
