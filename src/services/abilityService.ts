@@ -9,7 +9,7 @@ type Subject = 'User' | User;
 // Define type for Ability class
 const AppAbility = Ability as AbilityClass<Ability<[Action, Subject]>>;
 
-export class AbilityService {
+class AbilityService {
 
   // Define the abilities a user has
   private static defineAbilityFor(user: User | AnonymousUser) {
@@ -18,12 +18,15 @@ export class AbilityService {
     // USER MANAGEMENT
     switch (user.type) {
       case UserType.anonymous:
+        can('read', 'User');
         can('create', 'User');
         break;
       case UserType.regular:
+        can('read', 'User');
         can(['read', 'update', 'delete'], 'User', { id: { $eq: user.id } });
         break;
       case UserType.moderator:
+        can('read', 'User');
         can(['read', 'update', 'delete'], 'User', { id: { $eq: user.id } });
         can('delete', 'User', { type: { $ne: UserType.moderator } });
         break;
@@ -34,10 +37,10 @@ export class AbilityService {
 
   // Check if the user can perform the action on the subject
   // (and optionally, field) or throw a ForbiddenException.
-  public static for(user: User | AnonymousUser) {
+  for(user: User | AnonymousUser) {
     return {
       throwUnlessCan: (action: Action, subject: Subject, field?: string) => {
-        const ability = this.defineAbilityFor(user);
+        const ability = AbilityService.defineAbilityFor(user);
         if (ability.cannot(action, subject, field)) {
           const subjectName = typeof subject === 'object' ? subject.constructor.name : String(subject);
           throw new ForbiddenException(`You cannot ${action} ${subjectName}.`);
@@ -47,3 +50,5 @@ export class AbilityService {
   }
 
 }
+
+export const abilityService = new AbilityService();

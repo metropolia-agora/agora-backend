@@ -1,2 +1,2 @@
-export * from './AbilityService';
-export * from './UserService';
+export * from './abilityService';
+export * from './userService';

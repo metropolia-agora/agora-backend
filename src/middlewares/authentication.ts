@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
-import { UserService } from '../services';
+import { userService } from '../services';
 import { UnauthorizedException } from '../exceptions';
 import { env } from '../utils';
 import { AnonymousUser } from '../entities';
@@ -30,7 +30,7 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
             // Verify that the token belongs to an existing user
             try {
               // Continue as an authenticated user
-              req.user = await UserService.findUserById(decoded.userId);
+              req.user = await userService.findUserById(decoded.userId);
               return next();
             } catch (error) {
               return next(new UnauthorizedException('Authorization token invalid.'));
