@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { UserService } from '../services';
+import { AbilityService, UserService } from '../services';
 
 export const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password }: { username: string, password: string } = req.body;
@@ -16,6 +16,7 @@ export const authenticateUser = async (req: Request, res: Response, next: NextFu
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { username, password }: { username: string, password: string } = req.body;
   try {
+    AbilityService.for(req.user).throwUnlessCan('create', 'User');
     await UserService.createUser(username, password);
     const user = await UserService.findUserByUsername(username);
     const token = await UserService.generateToken(user);
