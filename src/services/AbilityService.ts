@@ -21,13 +21,11 @@ export class AbilityService {
         can('create', 'User');
         break;
       case UserType.regular:
-      case UserType.moderator:
         can(['read', 'update', 'delete'], 'User', { id: { $eq: user.id } });
         break;
-      case UserType.admin:
+      case UserType.moderator:
         can(['read', 'update', 'delete'], 'User', { id: { $eq: user.id } });
-        can('delete', 'User', { type: { $ne: UserType.admin } });
-        can('update', 'User', 'type', { type: { $ne: UserType.admin } });
+        can('delete', 'User', { type: { $ne: UserType.moderator } });
         break;
     }
 
@@ -42,8 +40,7 @@ export class AbilityService {
         const ability = this.defineAbilityFor(user);
         if (ability.cannot(action, subject, field)) {
           const subjectName = typeof subject === 'object' ? subject.constructor.name : String(subject);
-          const reason = `You cannot ${action} ${subjectName}.`;
-          throw new ForbiddenException(reason);
+          throw new ForbiddenException(`You cannot ${action} ${subjectName}.`);
         }
       },
     };

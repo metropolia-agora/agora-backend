@@ -1,9 +1,8 @@
-// User types (anonymous, regular, moderator, and admin)
+// User types (anonymous, regular and moderator)
 export enum UserType {
   anonymous,
   regular,
   moderator,
-  admin,
 }
 
 export class AnonymousUser {
@@ -18,8 +17,8 @@ export class AnonymousUser {
 export class User {
   // UUIDv4 universally unique identifier
   id: string;
-  // User type (regular, moderator, or admin)
-  type: UserType.regular | UserType.moderator | UserType.admin;
+  // User type (regular or moderator)
+  type: UserType.regular | UserType.moderator;
   // Unique username
   username: string;
   // Hashed password
