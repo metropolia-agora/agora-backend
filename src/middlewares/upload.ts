@@ -1,4 +1,5 @@
 import multer from 'multer';
+import { BadRequestException } from '../exceptions';
 
 // File types
 export const FileTypes = {
@@ -20,6 +21,7 @@ export const upload = (allowedFileTypes: string[]) => multer({
   fileFilter(req, file, callback) {
     const fileCategory = file.mimetype.split('/')[0];
     const isAllowed = allowedFileTypes.includes(fileCategory);
-    callback(null, isAllowed);
+    if (!isAllowed) return callback(new BadRequestException('The file type is not allowed.'));
+    callback(null, true);
   },
 });

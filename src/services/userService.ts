@@ -2,6 +2,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
 import { v4 as uuid4 } from 'uuid';
+import { promises as fs } from 'fs';
 import { userRepository } from '../repository';
 import { User, UserType } from '../entities';
 import { BadRequestException, NotFoundException } from '../exceptions';
@@ -98,6 +99,18 @@ class UserService {
     } else {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       await userRepository.update(user.id, { password: hashedPassword });
+    }
+  }
+
+  // Update the profile picture of a user
+  async updatePicture(user: User, picture?: Express.Multer.File): Promise<void> {
+    if (!picture) {
+      throw new BadRequestException('The profile picture is missing.');
+    } else {
+      if (user.pictureFilename) {
+        await fs.rm(`uploads/${user.pictureFilename}`, { force: true });
+      }
+      await userRepository.update(user.id, { pictureFilename: picture.filename });
     }
   }
 

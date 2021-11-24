@@ -81,8 +81,14 @@ class UserControllers {
   }
 
   async updateUserPicture(req: Request, res: Response, next: NextFunction) {
+    const { userId } = req.params;
+    const newPicture = req.file;
     try {
-      return res.status(HttpStatusCodes.NOT_IMPLEMENTED).json({ ok: true });
+      const user = await userService.findUserById(userId);
+      abilityService.for(req.user).throwUnlessCan('update', user);
+      await userService.updatePicture(user, newPicture);
+      const updatedUser = await userService.findUserById(userId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: updatedUser });
     } catch (error) {
       return next(error);
     }
