@@ -70,9 +70,34 @@ class UserService {
   async deleteUser(user: User, password: string): Promise<void> {
     const doPasswordsMatch = await bcrypt.compare(password, user.password);
     if (!doPasswordsMatch) {
-      throw new BadRequestException('Invalid username or password.');
+      throw new BadRequestException('The password is incorrect.');
     } else {
       await userRepository.delete(user.id);
+    }
+  }
+
+  // Update the username of a user
+  async updateUsername(user: User, username: string): Promise<void> {
+    const usernameError = await UserService.validateUsername(username);
+    if (usernameError) {
+      throw new BadRequestException(usernameError);
+    } else {
+      await userRepository.update(user.id, { username });
+    }
+  }
+
+  // Update the password of a user
+  async updatePassword(user: User, newPassword: string, currentPassword: string): Promise<void> {
+    const errors: { newPassword?: string, currentPassword?: string } = {};
+    const newPasswordError = UserService.validatePassword(newPassword);
+    if (newPasswordError) errors.newPassword = newPasswordError;
+    const doPasswordsMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!doPasswordsMatch) errors.currentPassword = 'The password is incorrect.';
+    if (Object.keys(errors).length) {
+      throw new BadRequestException('The provided fields are invalid.', errors);
+    } else {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await userRepository.update(user.id, { password: hashedPassword });
     }
   }
 

@@ -53,16 +53,28 @@ class UserControllers {
   }
 
   async updateUserUsername(req: Request, res: Response, next: NextFunction) {
+    const { userId } = req.params;
+    const { username }: { username: string } = req.body;
     try {
-      return res.status(HttpStatusCodes.NOT_IMPLEMENTED).json({ ok: true });
+      const user = await userService.findUserById(userId);
+      abilityService.for(req.user).throwUnlessCan('update', user);
+      await userService.updateUsername(user, username);
+      const updatedUser = await userService.findUserById(userId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: updatedUser });
     } catch (error) {
       return next(error);
     }
   }
 
   async updateUserPassword(req: Request, res: Response, next: NextFunction) {
+    const { userId } = req.params;
+    const { newPassword, currentPassword }: { newPassword: string, currentPassword: string } = req.body;
     try {
-      return res.status(HttpStatusCodes.NOT_IMPLEMENTED).json({ ok: true });
+      const user = await userService.findUserById(userId);
+      abilityService.for(req.user).throwUnlessCan('update', user);
+      await userService.updatePassword(user, newPassword, currentPassword);
+      const updatedUser = await userService.findUserById(userId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: updatedUser });
     } catch (error) {
       return next(error);
     }

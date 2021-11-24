@@ -25,6 +25,13 @@ class UserRepository {
     await db.pool.query(query, [id]);
   }
 
+  async update(id: string, fields: Partial<User>): Promise<void> {
+    const keys = Object.keys(fields).map(field => `${field} = ?`).join(' ');
+    const values = Object.values(fields);
+    const query = `update users set ${keys} where id = ?`;
+    await db.pool.query(query, [...values, id]);
+  }
+
 }
 
 export const userRepository = new UserRepository();
