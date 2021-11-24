@@ -1,13 +1,14 @@
-import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { errorHandler } from './middlewares';
+import { userRouter } from './routes';
+import { authentication, errorHandler } from './middlewares';
+import { env } from './utils';
 
 // Create express app
 const app = express();
 
-// Get port from env or use default 5000
-const port = process.env.PORT || 5000;
+// Get port from env
+const port = env.getPort();
 
 // Set up JSON body parsing
 app.use(express.json());
@@ -21,7 +22,13 @@ app.get('/api', (req: Request, res: Response) => {
   res.status(200).send('API is running.');
 });
 
-// Attach error handler
+// Attach authentication middleware
+app.use(authentication);
+
+// Attach api routers
+app.use('/api/users', userRouter);
+
+// Attach error handler middleware
 app.use(errorHandler);
 
 // Start listening to incoming requests

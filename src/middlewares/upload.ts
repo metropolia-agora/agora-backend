@@ -1,6 +1,8 @@
 import multer from 'multer';
+import { BadRequestException } from '../exceptions';
 
-export const FileType = {
+// File types
+export const FileTypes = {
   audio: 'audio',
   image: 'image',
   video: 'video',
@@ -15,10 +17,11 @@ export const upload = (allowedFileTypes: string[]) => multer({
   limits: {
     fileSize: 10485760,
   },
-  // Filter out files that are not audio, image, or video
+  // Filter out files that are not allowed
   fileFilter(req, file, callback) {
     const fileCategory = file.mimetype.split('/')[0];
-    const isSupported = allowedFileTypes.includes(fileCategory);
-    callback(null, isSupported);
+    const isAllowed = allowedFileTypes.includes(fileCategory);
+    if (!isAllowed) return callback(new BadRequestException('The file type is not allowed.'));
+    callback(null, true);
   },
 });

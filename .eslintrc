@@ -15,7 +15,7 @@
     "brace-style": ["error", "1tbs"],
     "comma-dangle": ["warn", "always-multiline"],
     "consistent-return": "off",
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": ["error", "unix"],
     "lines-between-class-members": "off",
     "max-len": ["error", 120],
