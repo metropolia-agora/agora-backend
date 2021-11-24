@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { userRouter } from './routes';
+import { userRouter, postRouter } from './routes';
 import { authentication, errorHandler } from './middlewares';
 import { env } from './utils';
 
@@ -27,6 +27,7 @@ app.use(authentication);
 
 // Attach api routers
 app.use('/api/users', userRouter);
+app.use('/api/posts', postRouter);
 
 // Attach error handler middleware
 app.use(errorHandler);
