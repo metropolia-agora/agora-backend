@@ -16,6 +16,17 @@ class PostControllers {
     }
   }
 
+  async getPost(req: Request, res: Response, next: NextFunction) {
+    const { postId } = req.params;
+    try {
+      const post = await postService.findPostById(postId);
+      abilityService.for(req.user).throwUnlessCan('read', post);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, post });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
 }
 
 export const postControllers = new PostControllers();

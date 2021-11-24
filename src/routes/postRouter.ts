@@ -15,5 +15,10 @@ postRouter.post(
 );
 
 
+// Get post
+postRouter.get(
+  ':postId',
+  postControllers.getPost,
+);
 
 export { postRouter };

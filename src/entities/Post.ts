@@ -6,4 +6,8 @@ export class Post {
   // mimetype?: string;
   createdAt: Date;
   updatedAt: Date;
+
+  constructor(data: Post) {
+    Object.assign(this, data);
+  }
 }
