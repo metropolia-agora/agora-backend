@@ -23,11 +23,11 @@ class AbilityService {
         break;
       case UserType.regular:
         can('read', 'User');
-        can(['read', 'update', 'delete'], 'User', { id: { $eq: user.id } });
+        can(['update', 'delete'], 'User', { id: { $eq: user.id } });
         break;
       case UserType.moderator:
         can('read', 'User');
-        can(['read', 'update', 'delete'], 'User', { id: { $eq: user.id } });
+        can(['update', 'delete'], 'User', { id: { $eq: user.id } });
         can('delete', 'User', { type: { $ne: UserType.moderator } });
         break;
     }

@@ -16,7 +16,7 @@ userRouter.post(
 );
 
 // Create a new user
-userRouter.put(
+userRouter.post(
   '/',
   validator([
     body('username').isString(),
