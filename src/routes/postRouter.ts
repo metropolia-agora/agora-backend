@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {body, FileTypes, upload, validator} from '../middlewares';
+import {body, FileTypes, param, upload, validator} from '../middlewares';
 import { postControllers } from '../controllers';
 
 // Router to handle requests to /api/posts
@@ -16,15 +16,17 @@ postRouter.post(
 );
 
 
-// Get post
+// Get post by id
 postRouter.get(
   '/:postId',
+  param('postId').isUUID(4),
   postControllers.getPost,
 );
 
 // Delete post
 postRouter.delete(
   '/:postId',
+  param('postId').isUUID(4),
   postControllers.deletePost);
 
 export { postRouter };
