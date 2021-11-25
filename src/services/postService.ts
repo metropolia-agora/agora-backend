@@ -2,6 +2,7 @@ import { v4 as uuid4 } from 'uuid';
 import {BadRequestException, NotFoundException} from '../exceptions';
 import { User } from '../entities';
 import { postRepository } from '../repository';
+import { promises as fs } from 'fs';
 
 class PostService {
 
@@ -24,6 +25,10 @@ class PostService {
   }
 
   async deletePost(id: string) {
+    const post = await postRepository.selectById(id);
+    if (post?.filename) {
+      await fs.rm(`uploads/${post.filename}`, { force: true });
+    }
     await postRepository.delete(id);
   }
 }
