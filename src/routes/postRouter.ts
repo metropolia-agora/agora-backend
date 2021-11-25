@@ -17,7 +17,7 @@ postRouter.post(
 
 // Get post
 postRouter.get(
-  ':postId',
+  '/:postId',
   postControllers.getPost,
 );
 
