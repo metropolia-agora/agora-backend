@@ -22,6 +22,9 @@ class PostService {
     return post;
   }
 
+  async deletePost(id: string) {
+    await postRepository.delete(id);
+  }
 }
 
 export const postService = new PostService();

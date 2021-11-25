@@ -14,6 +14,11 @@ class PostRepository {
     if (result[0]) return new Post(result[0]);
   }
 
+  async delete(id: string): Promise<void> {
+    const query = 'delete from posts where id = ?';
+    await db.pool.query(query, [id]);
+  }
+
 }
 
 export const postRepository = new PostRepository();

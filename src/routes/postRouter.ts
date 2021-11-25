@@ -21,4 +21,9 @@ postRouter.get(
   postControllers.getPost,
 );
 
+// Delete post
+postRouter.delete(
+  '/:postId',
+  postControllers.deletePost);
+
 export { postRouter };

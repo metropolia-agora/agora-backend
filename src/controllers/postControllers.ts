@@ -27,6 +27,18 @@ class PostControllers {
     }
   }
 
+  async deletePost(req: Request, res: Response, next: NextFunction) {
+    const { postId } = req.params;
+    try {
+      const post = await postService.findPostById(postId);
+      abilityService.for(req.user).throwUnlessCan('delete', post);
+      await postService.deletePost(postId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, post});
+    } catch (error) {
+      return next(error);
+    }
+  }
+
 }
 
 export const postControllers = new PostControllers();
