@@ -5,16 +5,17 @@ import { postRepository } from '../repository';
 
 class PostService {
 
-  async createPost(user: User, content: string) {
-    if (!content) {
-      throw new BadRequestException('The content cannot be empty');
+  async createPost(user: User, content: string | undefined, file: Express.Multer.File | undefined) {
+    if (!content && !file) {
+      throw new BadRequestException('The post cannot be empty');
     } else {
       const id = uuid4();
       const userId = user.id;
-      await postRepository.insert(id, userId, content);
+      const filename = file?.filename;
+      const mimetype = file?.mimetype;
+      await postRepository.insert(id, userId, content, filename, mimetype);
     }
   }
-
 
   async findPostById(id: string) {
     const post = await postRepository.selectById(id);

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body, validator } from '../middlewares';
+import {body, FileTypes, upload, validator} from '../middlewares';
 import { postControllers } from '../controllers';
 
 // Router to handle requests to /api/posts
@@ -9,8 +9,9 @@ const postRouter = Router();
 postRouter.post(
   '/',
   validator([
-    body('content').isString(),
+    body('content').isString().optional(),
   ]),
+  upload([FileTypes.image, FileTypes.audio, FileTypes.video]).single('file'),
   postControllers.createPost,
 );
 

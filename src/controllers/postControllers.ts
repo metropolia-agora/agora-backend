@@ -6,10 +6,11 @@ import { User } from '../entities';
 class PostControllers {
 
   async createPost(req: Request, res: Response, next: NextFunction) {
-    const { content }: { content: string } = req.body;
+    const { content }: { content?: string } = req.body;
+    const file = req?.file;
     try {
       abilityService.for(req.user).throwUnlessCan('create', 'Post');
-      await postService.createPost(req.user as User, content);
+      await postService.createPost(req.user as User, content, file);
       return res.status(HttpStatusCodes.OK).json({ ok: true });
     } catch (error) {
       return next(error);

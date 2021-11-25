@@ -3,9 +3,20 @@ import {Post} from '../entities';
 
 class PostRepository {
 
-  async insert(id: string, userId: string, content: string): Promise<void> {
-    const query = 'insert into posts(id, userId, content) values(?, ?, ?)';
-    await db.pool.query(query, [id, userId, content]);
+  async insert(id: string, userId: string, content?: string, filename?: string, mimetype?: string): Promise<void> {
+    let query = 'insert into posts(id, userId, content, filename, mimetype) values(?, ?, ?, ?, ?)';
+    let values = [id, userId, content, filename, mimetype];
+
+    if (!content) {
+      query = 'insert into posts(id, userId, filename, mimetype) values(?, ?, ?, ?)';
+      values = [id, userId, filename, mimetype];
+    }
+    if (!mimetype) {
+      query = 'insert into posts(id, userId, content) values(?, ?, ?)';
+      values = [id, userId, content];
+    }
+
+    await db.pool.query(query, values);
   }
 
   async selectById(id: string): Promise<Post | undefined> {
