@@ -1,5 +1,5 @@
 import { v4 as uuid4 } from 'uuid';
-import {BadRequestException, NotFoundException} from '../exceptions';
+import { BadRequestException, NotFoundException } from '../exceptions';
 import { User } from '../entities';
 import { postRepository } from '../repository';
 import { promises as fs } from 'fs';

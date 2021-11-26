@@ -1,5 +1,5 @@
 import { db } from '../utils';
-import {Post} from '../entities';
+import { Post } from '../entities';
 
 class PostRepository {
 

@@ -12,6 +12,7 @@
   "ignorePatterns": ["dist"],
   "plugins": ["@typescript-eslint"],
   "rules": {
+    "block-spacing": ["error", "always"],
     "brace-style": ["error", "1tbs"],
     "comma-dangle": ["warn", "always-multiline"],
     "consistent-return": "off",
@@ -24,6 +25,7 @@
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "object-curly-newline": "off",
+    "object-curly-spacing": ["error", "always"],
     "@typescript-eslint/no-unused-vars": "off"
   }
 }

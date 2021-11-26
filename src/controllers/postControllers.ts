@@ -11,7 +11,7 @@ class PostControllers {
     try {
       abilityService.for(req.user).throwUnlessCan('create', 'Post');
       await postService.createPost(req.user as User, content, file);
-      return res.status(HttpStatusCodes.OK).json({ ok: true });
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
     } catch (error) {
       return next(error);
     }
@@ -34,7 +34,7 @@ class PostControllers {
       const post = await postService.findPostById(postId);
       abilityService.for(req.user).throwUnlessCan('delete', post);
       await postService.deletePost(postId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, post});
+      return res.status(HttpStatusCodes.OK).json({ ok: true, post });
     } catch (error) {
       return next(error);
     }
