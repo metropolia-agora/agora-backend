@@ -1,6 +1,6 @@
 import { v4 as uuid4 } from 'uuid';
 import { BadRequestException } from '../exceptions';
-import { Post, User } from '../entities';
+import { User } from '../entities';
 import { commentRepository } from '../repository';
 
 class CommentService {

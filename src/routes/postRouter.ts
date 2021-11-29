@@ -37,6 +37,9 @@ postRouter.delete(
 // COMMENT ENDPOINTS
 postRouter.post(
   '/:postId/comments',
+  validator([
+    param('postId').isUUID(4),
+  ]),
   postControllers.createComment);
 
 export { postRouter };
