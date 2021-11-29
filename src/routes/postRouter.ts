@@ -33,4 +33,10 @@ postRouter.delete(
   ]),
   postControllers.deletePost);
 
+
+// COMMENT ENDPOINTS
+postRouter.post(
+  '/:postId/comments',
+  postControllers.createComment);
+
 export { postRouter };

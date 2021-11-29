@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { abilityService, postService } from '../services';
+import { abilityService, commentService, postService } from '../services';
 import { User } from '../entities';
 
 class PostControllers {
@@ -40,6 +40,19 @@ class PostControllers {
     }
   }
 
+  // COMMENT ENDPOINTS
+
+  async createComment(req: Request, res: Response, next: NextFunction) {
+    const { content }: { content: string } = req.body;
+    const { postId } = req.params;
+    try {
+      abilityService.for(req.user).throwUnlessCan('create', 'Comment');
+      await  commentService.createComment(postId, req.user as User, content);
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export const postControllers = new PostControllers();
