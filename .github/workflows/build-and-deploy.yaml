@@ -16,7 +16,7 @@ jobs:
           USERNAME: ${{secrets.SSH_METROPOLIA_USERNAME}}
           SSHPASS: ${{secrets.SSH_METROPOLIA_PASSWORD}}
         run: |
-          sshpass -e ssh -tt "USERNAME@shell.metropolia.fi"
+          sshpass -e ssh -T "USERNAME@shell.metropolia.fi"
           whoami
         shell: bash
       - name: SSH into target server
@@ -24,6 +24,6 @@ jobs:
           USERNAME: ${{secrets.SSH_SERVER_USERNAME}}
           SSHPASS: ${{secrets.SSH_SERVER_PASSWORD}}
         run: |
-          sshpass -e ssh -tt "USERNAME@shell.metropolia.fi"
+          sshpass -e ssh -T "USERNAME@shell.metropolia.fi"
           whoami
         shell: bash
