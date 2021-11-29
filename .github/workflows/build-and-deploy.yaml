@@ -12,12 +12,8 @@ jobs:
           whereis sshpass
         shell: bash
       - name: SSH into Metropolia intranet
-        env:
-          USERNAME: ${{secrets.SSH_METROPOLIA_USERNAME}}
-          SSHPASS: ${{secrets.SSH_METROPOLIA_PASSWORD}}
         run: |
-          echo "$SSHPASS"
-          sudo sshpass -e ssh -vvv -o StrictHostKeyChecking=no -tt "USERNAME@shell.metropolia.fi"
+          sudo sshpass -p "${{secrets.SSH_METROPOLIA_PASSWORD}}" ssh -vvv -o StrictHostKeyChecking=no -tt "${{secrets.SSH_METROPOLIA_USERNAME}}@shell.metropolia.fi"
           whoami
         shell: bash
       - name: SSH into target server
