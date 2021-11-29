@@ -46,9 +46,14 @@ class PostControllers {
     const { content }: { content: string } = req.body;
     const { postId } = req.params;
     try {
-      abilityService.for(req.user).throwUnlessCan('create', 'Comment');
-      await  commentService.createComment(postId, req.user as User, content);
-      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
+      const post = await postService.findPostById(postId);
+      if (!post) {
+        return res.status(HttpStatusCodes.NOT_FOUND).json({ ok: false });
+      } else {
+        abilityService.for(req.user).throwUnlessCan('create', 'Comment');
+        await commentService.createComment(postId, req.user as User, content);
+        return res.status(HttpStatusCodes.CREATED).json({ ok: true });
+      }
     } catch (error) {
       return next(error);
     }
