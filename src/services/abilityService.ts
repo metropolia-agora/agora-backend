@@ -1,10 +1,10 @@
 import { Ability, AbilityBuilder, AbilityClass } from '@casl/ability';
-import { AnonymousUser, User, UserType, Post } from '../entities';
+import { AnonymousUser, User, UserType, Post, Reaction } from '../entities';
 import { ForbiddenException } from '../exceptions';
 
 // Define allowed actions and valid subjects
 type Action = 'create' | 'read' | 'update' | 'delete';
-type Subject = 'User' | User | 'Post' | Post;
+type Subject = 'User' | User | 'Post' | Post | 'Reaction' | Reaction;
 
 // Define type for Ability class
 const AppAbility = Ability as AbilityClass<Ability<[Action, Subject]>>;
@@ -47,8 +47,25 @@ class AbilityService {
         break;
     }
 
+
+    // REACTION MANAGEMENT
+
+    switch (user.type) {
+      case UserType.anonymous:
+        can('read', 'Reaction');
+        break;
+      case UserType.regular:
+        can(['create', 'read'], 'Reaction');
+        can(['update', 'delete'], 'Reaction', { userId: { $eq: user.id } });
+        break;
+      case UserType.moderator:
+        can(['create', 'read'], 'Reaction');
+        can(['update', 'delete'], 'Reaction', { userId: { $eq: user.id } });
+        break;
+    }
     return build();
   }
+
 
   // Check if the user can perform the action on the subject
   // (and optionally, field) or throw a ForbiddenException.

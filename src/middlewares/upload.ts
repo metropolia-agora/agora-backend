@@ -10,7 +10,7 @@ export const FileTypes = {
 
 // Express middleware to handle the parsing of `multipart/form-data` requests,
 // including the handling of file uploads and request body parsing.
-export const upload = (allowedFileTypes: string[]) => multer({
+export const upload = (allowedFileTypes: (ReactionType.UpVote | ReactionType.DownVote)[]) => multer({
   // Set the destination of the uploaded files to `uploads/`
   dest: 'uploads/',
   // Limit the maximum file size to 10MB
