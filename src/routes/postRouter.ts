@@ -42,4 +42,12 @@ postRouter.post(
   ]),
   postControllers.createComment);
 
+postRouter.delete(
+  '/:postId/comments/:commentId',
+  validator([
+    param('postId').isUUID(4),
+    param('commentId').isUUID(4),
+  ]),
+  postControllers.deleteComment);
+
 export { postRouter };

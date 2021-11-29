@@ -5,4 +5,8 @@ export class Comment {
   content: string;
   createdAt: Date;
   updatedAt: Date;
+
+  constructor(data: Comment) {
+    Object.assign(this, data);
+  }
 }

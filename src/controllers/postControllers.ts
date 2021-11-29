@@ -53,6 +53,19 @@ class PostControllers {
       return next(error);
     }
   }
+
+  async deleteComment(req: Request, res: Response, next: NextFunction) {
+    const { commentId } = req.params;
+    console.log('postController, deleteComment, commentID:', commentId);
+    try {
+      const comment = await commentService.findCommentById(commentId);
+      abilityService.for(req.user).throwUnlessCan('delete', comment);
+      await commentService.deleteComment(commentId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, comment });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export const postControllers = new PostControllers();
