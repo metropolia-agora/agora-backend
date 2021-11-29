@@ -15,4 +15,19 @@ jobs:
           proxy_host: "${{ secrets.SSH_PROXY_HOSTNAME }}"
           proxy_username: "${{ secrets.SSH_PROXY_USERNAME }}"
           proxy_password: "${{ secrets.SSH_PROXY_PASSWORD }}"
-          script: mkdir test
+          debug: true
+          script: |
+            cd ~
+            pm2 stop agora-backend
+            mkdir tmp 
+            mv agora-backend/uploads tmp/uploads
+            rm -rf agora-backend
+            git clone "${{ github.server_url }}/${{ github.repository }}.git"
+            cd agora-backend
+            touch .env
+            echo "" > .env
+            npm install
+            npm run build
+            cd ..
+            mv tmp/uploads agora-backend/uploads
+            # pm2 start agora-backend/dist/server.js --name=agora-backend
