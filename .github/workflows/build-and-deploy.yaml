@@ -13,17 +13,17 @@ jobs:
         shell: bash
       - name: SSH into Metropolia intranet
         env:
-          SSH_METROPOLIA_USERNAME: ${{secrets.SSH_METROPOLIA_USERNAME}}
-          SSH_METROPOLIA_PASSWORD: ${{secrets.SSH_METROPOLIA_PASSWORD}}
+          USERNAME: ${{secrets.SSH_METROPOLIA_USERNAME}}
+          SSHPASS: ${{secrets.SSH_METROPOLIA_PASSWORD}}
         run: |
-          sshpass -p "$SSH_METROPOLIA_PASSWORD" ssh "$SSH_METROPOLIA_USERNAME@shell.metropolia.fi"
+          sshpass -e ssh "USERNAME@shell.metropolia.fi"
           whoami
         shell: bash
       - name: SSH into target server
         env:
-          SSH_SERVER_USERNAME: ${{secrets.SSH_SERVER_USERNAME}}
-          SSH_SERVER_PASSWORD: ${{secrets.SSH_SERVER_PASSWORD}}
+          USERNAME: ${{secrets.SSH_SERVER_USERNAME}}
+          SSHPASS: ${{secrets.SSH_SERVER_PASSWORD}}
         run: |
-          sshpass -p "SSH_SERVER_PASSWORD" ssh "SSH_SERVER_USERNAME@shell.metropolia.fi"
+          sshpass -e ssh "USERNAME@shell.metropolia.fi"
           whoami
         shell: bash
