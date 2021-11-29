@@ -17,6 +17,15 @@ jobs:
           SSHPASS: ${{secrets.SSH_METROPOLIA_PASSWORD}}
         run: |
           echo "$SSHPASS"
-          sudo sshpass -e ssh -vvv -o StrictHostKeyChecking=no -tt "USERNAME@shell.metropolia.fi"
+          sshpass -e ssh -vvv -o StrictHostKeyChecking=no -tt "USERNAME@shell.metropolia.fi"
+          whoami
+        shell: bash
+      - name: SSH into target server
+        env:
+          USERNAME: ${{secrets.SSH_SERVER_USERNAME}}
+          SSHPASS: ${{secrets.SSH_SERVER_PASSWORD}}
+        run: |
+          echo "$SSHPASS"
+          sshpass -e ssh -vvv -o StrictHostKeyChecking=no -tt "USERNAME@shell.metropolia.fi"
           whoami
         shell: bash
