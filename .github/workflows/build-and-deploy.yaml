@@ -1,7 +1,7 @@
 name: build-and-deploy
 on:
   push:
-    branches: [deployment]
+    branches: [main]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -39,4 +39,5 @@ jobs:
             npm run build
             cd ..
             mv tmp/uploads agora-backend/uploads
+            rm -rf tmp
             pm2 start agora-backend/dist/server.js --name=agora-backend
