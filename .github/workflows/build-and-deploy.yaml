@@ -17,7 +17,7 @@ jobs:
           SSHPASS: ${{secrets.SSH_METROPOLIA_PASSWORD}}
         run: |
           echo "$SSHPASS"
-          sshpass -e ssh -vvv -o StrictHostKeyChecking=no -tt "USERNAME@shell.metropolia.fi"
+          sudo sshpass -e ssh -vvv -o StrictHostKeyChecking=no -tt "USERNAME@shell.metropolia.fi"
           whoami
         shell: bash
       - name: SSH into target server
