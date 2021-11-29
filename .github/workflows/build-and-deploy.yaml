@@ -14,5 +14,6 @@ jobs:
           password: "${{ secrets.SSH_SERVER_PASSWORD }}"
           proxy_host: "shell.metropolia.fi"
           proxy_username: "${{ secrets.SSH_METROPOLIA_USERNAME }}"
-          proxy_password: "${{ secrets.SSH_METROPOLIA_USERNAME }}"
+          proxy_password: "${{ secrets.SSH_METROPOLIA_PASSWORD }}"
+          debug: true
           script: whoami
