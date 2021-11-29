@@ -9,11 +9,10 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: "10.114.34.84"
+          host: "${{ secrets.SSH_SERVER_HOSTNAME }}"
           username: "${{ secrets.SSH_SERVER_USERNAME }}"
           password: "${{ secrets.SSH_SERVER_PASSWORD }}"
-          proxy_host: "shell.metropolia.fi"
-          proxy_username: "${{ secrets.SSH_METROPOLIA_USERNAME }}"
-          proxy_password: "${{ secrets.SSH_METROPOLIA_PASSWORD }}"
-          debug: true
-          script: whoami
+          proxy_host: "${{ secrets.SSH_PROXY_HOSTNAME }}"
+          proxy_username: "${{ secrets.SSH_PROXY_USERNAME }}"
+          proxy_password: "${{ secrets.SSH_PROXY_PASSWORD }}"
+          script: mkdir test
