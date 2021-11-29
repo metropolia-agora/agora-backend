@@ -24,10 +24,19 @@ jobs:
             rm -rf agora-backend
             git clone "${{ github.server_url }}/${{ github.repository }}.git"
             cd agora-backend
-            touch .env
-            echo "" > .env
+            cat > .env<< EOF
+            # express server port
+            PORT=${{ secrets.PORT }}
+            # jsonwebtoken secret
+            JWT_SECRET="${{ secrets.JWT_TOKEN }}"
+            # mariadb connection credentials
+            MARIADB_HOST="${{ secrets.MARIADB_HOSTNAME }}"
+            MARIADB_USER="${{ secrets.MARIADB_USERNAME }}"
+            MARIADB_PASSWORD="${{ secrets.MARIADB_PASSWORD }}"
+            MARIADB_DATABASE="${{ secrets.MARIADB_DATABASE }}"
+            EOF
             npm install
             npm run build
             cd ..
             mv tmp/uploads agora-backend/uploads
-            # pm2 start agora-backend/dist/server.js --name=agora-backend
+            pm2 start agora-backend/dist/server.js --name=agora-backend
