@@ -6,22 +6,13 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install and verfiy sshpass
-        run: |
-          sudo apt install sshpass
-          whereis sshpass
-        shell: bash
-      - name: SSH into Metropolia intranet
-        run: |
-          sudo sshpass -p "${{secrets.SSH_METROPOLIA_PASSWORD}}" ssh -vvv -o StrictHostKeyChecking=no -tt "${{secrets.SSH_METROPOLIA_USERNAME}}@shell.metropolia.fi"
-          whoami
-        shell: bash
-      - name: SSH into target server
-        env:
-          USERNAME: ${{secrets.SSH_SERVER_USERNAME}}
-          SSHPASS: ${{secrets.SSH_SERVER_PASSWORD}}
-        run: |
-          echo "$SSHPASS"
-          sshpass -e ssh -vvv -o StrictHostKeyChecking=no -tt "USERNAME@shell.metropolia.fi"
-          whoami
-        shell: bash
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: "shell.metropolia.fi"
+          username: "${{ secrets.SSH_METROPOLIA_USERNAME }}"
+          password: "${{ secrets.SSH_METROPOLIA_USERNAME }}"
+          proxy_host: "10.114.34.84"
+          proxy_username: "${{ secrets.SSH_SERVER_USERNAME }}"
+          proxy_password: "${{ secrets.SSH_SERVER_PASSWORD }}"
+          script: whoami
