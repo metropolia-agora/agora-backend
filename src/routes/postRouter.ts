@@ -15,7 +15,6 @@ postRouter.post(
   postControllers.createPost,
 );
 
-
 // Get post by id
 postRouter.get(
   '/:postId',
@@ -31,8 +30,8 @@ postRouter.delete(
   validator([
     param('postId').isUUID(4),
   ]),
-  postControllers.deletePost);
-
+  postControllers.deletePost,
+);
 
 // COMMENT ENDPOINTS
 postRouter.post(
@@ -41,7 +40,8 @@ postRouter.post(
     param('postId').isUUID(4),
     body('content').isString(),
   ]),
-  postControllers.createComment);
+  postControllers.createComment,
+);
 
 postRouter.delete(
   '/:postId/comments/:commentId',
@@ -49,6 +49,7 @@ postRouter.delete(
     param('postId').isUUID(4),
     param('commentId').isUUID(4),
   ]),
-  postControllers.deleteComment);
+  postControllers.deleteComment,
+);
 
 export { postRouter };
