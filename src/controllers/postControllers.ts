@@ -48,14 +48,10 @@ class PostControllers {
     const { content }: { content: string } = req.body;
     const { postId } = req.params;
     try {
-      const post = await postService.findPostById(postId);
-      if (!post) {
-        return res.status(HttpStatusCodes.NOT_FOUND).json({ ok: false });
-      } else {
-        abilityService.for(req.user).throwUnlessCan('create', 'Comment');
-        await commentService.createComment(postId, req.user as User, content);
-        return res.status(HttpStatusCodes.CREATED).json({ ok: true });
-      }
+      await postService.findPostById(postId);
+      abilityService.for(req.user).throwUnlessCan('create', 'Comment');
+      await commentService.createComment(postId, req.user as User, content);
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
     } catch (error) {
       return next(error);
     }
@@ -63,7 +59,6 @@ class PostControllers {
 
   async deleteComment(req: Request, res: Response, next: NextFunction) {
     const { commentId } = req.params;
-    console.log('postController, deleteComment, commentID:', commentId);
     try {
       const comment = await commentService.findCommentById(commentId);
       abilityService.for(req.user).throwUnlessCan('delete', comment);

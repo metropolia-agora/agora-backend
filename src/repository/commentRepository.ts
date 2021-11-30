@@ -21,7 +21,6 @@ class CommentRepository {
   }
 
   async delete(id: string): Promise<void> {
-    console.log('commentRepository, delete, commentId:', id);
     const query = 'delete from comments where id = ?';
     await db.pool.query(query, [id]);
   }

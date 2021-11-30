@@ -39,6 +39,7 @@ postRouter.post(
   '/:postId/comments',
   validator([
     param('postId').isUUID(4),
+    body('content').isString(),
   ]),
   postControllers.createComment);
 
