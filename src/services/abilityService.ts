@@ -1,6 +1,6 @@
-import {Ability, AbilityBuilder, AbilityClass} from '@casl/ability';
-import {AnonymousUser, Comment, Post, User, UserType} from '../entities';
-import {ForbiddenException} from '../exceptions';
+import { Ability, AbilityBuilder, AbilityClass } from '@casl/ability';
+import { AnonymousUser, Comment, Post, User, UserType } from '../entities';
+import { ForbiddenException } from '../exceptions';
 
 // Define allowed actions and valid subjects
 type Action = 'create' | 'read' | 'update' | 'delete';
@@ -54,7 +54,7 @@ class AbilityService {
         break;
       case UserType.regular:
         can(['read', 'create'], 'Comment');
-        can(['update', 'delete'], 'Comment', { userId: { $eq: user.id} });
+        can(['update', 'delete'], 'Comment', { userId: { $eq: user.id } });
         break;
       case UserType.moderator:
         can(['read', 'create', 'delete'], 'Comment');
