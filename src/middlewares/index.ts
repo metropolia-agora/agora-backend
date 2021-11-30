@@ -1,4 +1,4 @@
 export * from './authentication';
 export * from './errorHandler';
-export * from './upload';
+export * from './fileUpload';
 export * from './validator';
