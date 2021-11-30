@@ -2,13 +2,12 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { userRouter, postRouter } from './routes';
 import { authentication, errorHandler } from './middlewares';
-import { env } from './utils';
 
 // Create express app
 const app = express();
 
 // Get port from env
-const port = env.getPort();
+const port = 5000;
 
 // Set up JSON body parsing
 app.use(express.json());

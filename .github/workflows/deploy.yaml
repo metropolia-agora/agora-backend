@@ -1,4 +1,4 @@
-name: build-and-deploy
+name: deploy
 on:
   push:
     branches: [main]
@@ -6,7 +6,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: SSH Remote Commands
+      - name: Deploy agora backend
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: "${{ secrets.SSH_SERVER_HOSTNAME }}"
@@ -25,8 +25,6 @@ jobs:
             git clone "${{ github.server_url }}/${{ github.repository }}.git"
             cd agora-backend
             cat > .env<< EOF
-            # express server port
-            PORT=${{ secrets.PORT }}
             # jsonwebtoken secret
             JWT_SECRET="${{ secrets.JWT_TOKEN }}"
             # mariadb connection credentials

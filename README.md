@@ -27,8 +27,6 @@ npm install
 
 **3.** Create a file in the project root directory named `.env` and place the following content into it. Make sure to replace these placeholder values with the actual secrets and connection details you wish to use.
 ```bash
-# express server port
-PORT=5000
 # jsonwebtoken secret
 JWT_SECRET=""
 # mariadb connection credentials
