@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, FileTypes, param, upload, validator } from '../middlewares';
 import { postControllers } from '../controllers';
-import { ReactionType } from '../entities/Reaction';
+import { ReactionType } from '../entities';
 
 
 // Router to handle requests to /api/posts
@@ -21,7 +21,7 @@ postRouter.post(
 
 // Get post by id
 postRouter.get(
-  '/:postId',
+  '/',
   validator([
     param('postId').isUUID(4),
   ]),
@@ -40,7 +40,7 @@ postRouter.delete(
 
 // Create a new Reaction
 postRouter.post(
-  '/api/posts/:postId/reactions/:userId',
+  '/:postId/reactions/:userId',
   validator([
     body('type').isIn([ReactionType.UpVote, ReactionType.DownVote]),
   ]),
