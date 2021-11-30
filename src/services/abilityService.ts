@@ -15,7 +15,7 @@ class AbilityService {
   private static defineAbilityFor(user: User | AnonymousUser) {
     const { can, build } = new AbilityBuilder(AppAbility);
 
-    // USER MANAGEMENT
+    // User management
     switch (user.type) {
       case UserType.anonymous:
         can('read', 'User');
@@ -32,7 +32,7 @@ class AbilityService {
         break;
     }
 
-    // POST MANAGEMENT
+    // Post management
     switch (user.type) {
       case UserType.anonymous:
         can('read', 'Post');
@@ -47,7 +47,7 @@ class AbilityService {
         break;
     }
 
-    // COMMENT MANAGEMENT
+    // Comment management
     switch (user.type) {
       case UserType.anonymous:
         can('read', 'Comment');

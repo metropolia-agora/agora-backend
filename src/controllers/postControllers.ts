@@ -68,6 +68,7 @@ class PostControllers {
       return next(error);
     }
   }
+
 }
 
 export const postControllers = new PostControllers();

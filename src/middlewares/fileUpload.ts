@@ -18,9 +18,8 @@ export const fileUpload = (allowedFileTypes: string[]) => multer({
     destination: 'uploads/',
     // Set the filename of the file to random generated filename + extension
     filename: (req, file, callback) => {
-      const filename = uuid4().replace(/-/g, '');
       const extension = file.originalname.split('.').pop();
-      callback(null, filename + '.' + extension);
+      callback(null, uuid4() + '.' + extension);
     },
   }),
   // Limit the maximum fileUpload size to 10 MB
