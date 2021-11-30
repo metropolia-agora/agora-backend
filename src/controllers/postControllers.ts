@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import { abilityService, postService } from '../services';
-import { Post, ReactionType, User } from '../entities';
+import {  ReactionType, User } from '../entities';
 import { reactionService } from '../services/reactionService';
 
 class PostControllers {
@@ -45,16 +45,15 @@ class PostControllers {
 
   async createReaction(req: Request, res: Response, next: NextFunction) {
     const { type }: {  type: ReactionType  } = req.body;
-
+    const { postId } = req.params;
     try {
-      const user = await reactionService.findReactionByUserId(user);
-      const post = await reactionService.findReactionByPostId(post);
-      if(!post || !user){
+      const post = await reactionService.findReactionByPostId(postId);
+      if (!post) {
         return res.status(HttpStatusCodes.NOT_FOUND).json({ ok: false });
       } else {
-        abilityService.for(req.body).throwUnlessCan('create', 'Reaction');
-        await reactionService.createReaction(user, post, type);
-        return res.status(HttpStatusCodes.CREATED).json({ok: true});
+        abilityService.for(req.user).throwUnlessCan('create', 'Reaction');
+        await reactionService.createReaction(postId, req.user as User, type);
+        return res.status(HttpStatusCodes.CREATED).json({ ok: true });
       }
     } catch (error) {
       return next(error);

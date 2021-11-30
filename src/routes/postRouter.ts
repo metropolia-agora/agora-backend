@@ -1,7 +1,7 @@
-import {Router} from 'express';
-import {body, FileTypes, param, upload, validator} from '../middlewares';
-import {postControllers} from '../controllers';
-import {ReactionType} from '../entities/Reaction';
+import { Router } from 'express';
+import { body, FileTypes, param, upload, validator } from '../middlewares';
+import { postControllers } from '../controllers';
+import { ReactionType } from '../entities/Reaction';
 
 
 // Router to handle requests to /api/posts
@@ -44,7 +44,6 @@ postRouter.post(
   validator([
     body('type').isIn([ReactionType.UpVote, ReactionType.DownVote]),
   ]),
-  upload([ReactionType.UpVote, ReactionType.DownVote]).single,
   postControllers.createReaction,
 );
 
