@@ -13,11 +13,12 @@ class CommentRepository {
     const result = await db.pool.query(query, [id]);
     if (result[0]) return new Comment(result[0]);
   }
+
   async selectAllByPostId(postId: string): Promise<Comment[] | undefined> {
     const query = 'select * from comments where postId = ?';
     const result = await db.pool.query(query, [postId]);
     const comments = result.slice(0) as Comment[];
-    if (result[0]) return comments.map(comment => new Comment(comment));
+    return comments.map(comment => new Comment(comment));
   }
 
   async delete(id: string): Promise<void> {
