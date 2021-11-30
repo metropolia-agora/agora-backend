@@ -21,8 +21,10 @@ class PostControllers {
     const { postId } = req.params;
     try {
       const post = await postService.findPostById(postId);
+      const comments = await commentService.findAllCommentsOfPost(postId);
       abilityService.for(req.user).throwUnlessCan('read', post);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, post });
+      abilityService.for(req.user).throwUnlessCan('read', 'Comment');
+      return res.status(HttpStatusCodes.OK).json({ ok: true, post, comments });
     } catch (error) {
       return next(error);
     }

@@ -21,6 +21,12 @@ class CommentService {
     return comment;
   }
 
+  async findAllCommentsOfPost(postId: string) {
+    const comments = await commentRepository.selectAllByPostId(postId);
+    if (!comments) throw new NotFoundException('This post does not have any comments.');
+    return comments;
+  }
+
   async deleteComment(id: string) {
     await commentRepository.delete(id);
   }
