@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body, FileTypes, param, upload, validator } from '../middlewares';
+import { body, FileTypes, fileUpload, param, validator } from '../middlewares';
 import { postControllers } from '../controllers';
 
 // Router to handle requests to /api/posts
@@ -11,11 +11,11 @@ postRouter.post(
   validator([
     body('content').isString().optional(),
   ]),
-  upload([FileTypes.image, FileTypes.audio, FileTypes.video]).single('file'),
+  fileUpload([FileTypes.image, FileTypes.audio, FileTypes.video]).single('file'),
   postControllers.createPost,
 );
 
-// Get post by id
+// Get a post
 postRouter.get(
   '/:postId',
   validator([
@@ -24,7 +24,7 @@ postRouter.get(
   postControllers.getPost,
 );
 
-// Delete post
+// Delete a post
 postRouter.delete(
   '/:postId',
   validator([
@@ -33,7 +33,7 @@ postRouter.delete(
   postControllers.deletePost,
 );
 
-// COMMENT ENDPOINTS
+// Create a new comment
 postRouter.post(
   '/:postId/comments',
   validator([
@@ -43,6 +43,7 @@ postRouter.post(
   postControllers.createComment,
 );
 
+// Delete a comment
 postRouter.delete(
   '/:postId/comments/:commentId',
   validator([

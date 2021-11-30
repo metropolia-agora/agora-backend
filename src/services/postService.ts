@@ -13,8 +13,7 @@ class PostService {
       const id = uuid4();
       const userId = user.id;
       const filename = file?.filename;
-      const mimetype = file?.mimetype;
-      await postRepository.insert(id, userId, content, filename, mimetype);
+      await postRepository.insert(id, userId, content, filename);
     }
   }
 
@@ -31,6 +30,7 @@ class PostService {
     }
     await postRepository.delete(id);
   }
+
 }
 
 export const postService = new PostService();

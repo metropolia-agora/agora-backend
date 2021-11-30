@@ -24,7 +24,7 @@ export class User {
   // Hashed password
   password: string;
   // Optional filename of the profile picture
-  pictureFilename?: string;
+  filename?: string;
   // Date of creation
   createdAt: Date;
   // Date of last modification
