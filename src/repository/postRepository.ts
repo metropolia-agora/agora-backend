@@ -11,16 +11,8 @@ class PostRepository {
   }
 
   async insert(id: string, userId: string, content?: string, filename?: string): Promise<void> {
-    if (content && filename) {
-      const query = 'insert into posts(id, userId, content, filename) values(?, ?, ?, ?)';
-      await db.pool.execute<ResultSetHeader>(query, [id, userId, content, filename]);
-    } else if (filename) {
-      const query = 'insert into posts(id, userId, filename) values(?, ?, ?)';
-      await db.pool.execute<ResultSetHeader>(query, [id, userId, filename]);
-    } else if (content) {
-      const query = 'insert into posts(id, userId, content) values(?, ?, ?)';
-      await db.pool.execute<ResultSetHeader>(query, [id, userId, filename]);
-    }
+    const query = 'insert into posts(id, userId, content, filename) values(?, ?, ?, ?)';
+    await db.pool.execute<ResultSetHeader>(query, [id, userId, content || null, filename || null]);
   }
 
   async delete(id: string): Promise<void> {
