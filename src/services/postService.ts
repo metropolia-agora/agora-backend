@@ -23,6 +23,11 @@ class PostService {
     return post;
   }
 
+  // Returns max 10 most recent post according to lastDate.
+  async findRecentPosts(lastDate: Date) {
+    return await postRepository.selectRecent(lastDate);
+  }
+
   async deletePost(id: string) {
     const post = await postRepository.selectById(id);
     if (post?.filename) {
