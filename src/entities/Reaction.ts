@@ -1,12 +1,15 @@
 export enum ReactionType {
-  UpVote = 1,
-  DownVote = -1
+  Upvote = 1,
+  Downvote = -1
 }
+const reaction1: ReactionType = 1; // this is correct
+const reaction2: ReactionType = -1; // this is correct
+const reaction3: ReactionType = -2;
 
 export class Reaction {
   userId: string;
   postId: string;
-  type: ReactionType.UpVote | ReactionType.DownVote;
+  type: ReactionType.Upvote | ReactionType.Downvote;
   createdAt: Date;
   updatedAt: Date;
 

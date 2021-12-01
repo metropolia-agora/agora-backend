@@ -1,4 +1,4 @@
-import { Post, ReactionType, User } from '../entities';
+import { ReactionType, User } from '../entities';
 import { reactionRepository } from '../repository/reactionRepository';
 import { BadRequestException, NotFoundException } from '../exceptions';
 

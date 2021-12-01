@@ -42,7 +42,8 @@ postRouter.delete(
 postRouter.post(
   '/:postId/reactions/:userId',
   validator([
-    body('type').isIn([ReactionType.UpVote, ReactionType.DownVote]),
+    param('postId').isUUID(4),
+    body('type').isIn([ReactionType.Upvote, ReactionType.Downvote]),
   ]),
   postControllers.createReaction,
 );
