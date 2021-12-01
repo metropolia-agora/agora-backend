@@ -1,10 +1,10 @@
 import { Ability, AbilityBuilder, AbilityClass } from '@casl/ability';
-import { AnonymousUser, User, UserType, Post, Reaction } from '../entities';
+import { AnonymousUser, Comment, Post, Reaction, User, UserType } from '../entities';
 import { ForbiddenException } from '../exceptions';
 
 // Define allowed actions and valid subjects
 type Action = 'create' | 'read' | 'update' | 'delete';
-type Subject = 'User' | User | 'Post' | Post | 'Reaction' | Reaction;
+type Subject = 'User' | User | 'Post' | Post | 'Comment' | Comment | 'Reaction' | Reaction;
 
 // Define type for Ability class
 const AppAbility = Ability as AbilityClass<Ability<[Action, Subject]>>;
@@ -15,7 +15,7 @@ class AbilityService {
   private static defineAbilityFor(user: User | AnonymousUser) {
     const { can, build } = new AbilityBuilder(AppAbility);
 
-    // USER MANAGEMENT
+    // User management
     switch (user.type) {
       case UserType.anonymous:
         can('read', 'User');
@@ -32,7 +32,7 @@ class AbilityService {
         break;
     }
 
-    // POST MANAGEMENT
+    // Post management
     switch (user.type) {
       case UserType.anonymous:
         can('read', 'Post');
@@ -47,9 +47,22 @@ class AbilityService {
         break;
     }
 
+    // Comment management
+    switch (user.type) {
+      case UserType.anonymous:
+        can('read', 'Comment');
+        break;
+      case UserType.regular:
+        can(['read', 'create'], 'Comment');
+        can(['update', 'delete'], 'Comment', { userId: { $eq: user.id } });
+        break;
+      case UserType.moderator:
+        can(['read', 'create', 'delete'], 'Comment');
+        can('update', 'Comment', { userId: { $eq: user.id } });
+        break;
+    }
 
-    // REACTION MANAGEMENT
-
+    // Reaction management
     switch (user.type) {
       case UserType.anonymous:
         can('read', 'Reaction');
@@ -63,9 +76,9 @@ class AbilityService {
         can(['update', 'delete'], 'Reaction', { userId: { $eq: user.id } });
         break;
     }
+
     return build();
   }
-
 
   // Check if the user can perform the action on the subject
   // (and optionally, field) or throw a ForbiddenException.

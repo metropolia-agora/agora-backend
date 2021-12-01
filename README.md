@@ -27,8 +27,6 @@ npm install
 
 **3.** Create a file in the project root directory named `.env` and place the following content into it. Make sure to replace these placeholder values with the actual secrets and connection details you wish to use.
 ```bash
-# express server port
-PORT=5000
 # jsonwebtoken secret
 JWT_SECRET=""
 # mariadb connection credentials
@@ -67,6 +65,10 @@ http://localhost:5000/api
 ```bash
 npm run lint
 ```
+
+## CI/CD
+
+A GitHub action has been set up to be triggered by a push - including a pull request merge - to the `main` branch of the repository, and re-deploy the express server to the host. The database content and uploaded files will be persisted between deployments.
 
 ## API documentation
 

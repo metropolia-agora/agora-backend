@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { abilityService, postService } from '../services';
+import { abilityService, commentService, postService, reactionService } from '../services';
 import {  ReactionType, User } from '../entities';
-import { reactionService } from '../services/reactionService';
 
 class PostControllers {
 
@@ -22,8 +21,10 @@ class PostControllers {
     const { postId } = req.params;
     try {
       const post = await postService.findPostById(postId);
+      const comments = await commentService.findAllCommentsOfPost(postId);
       abilityService.for(req.user).throwUnlessCan('read', post);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, post });
+      abilityService.for(req.user).throwUnlessCan('read', 'Comment');
+      return res.status(HttpStatusCodes.OK).json({ ok: true, post, comments });
     } catch (error) {
       return next(error);
     }
@@ -41,10 +42,37 @@ class PostControllers {
     }
   }
 
-  // PostReactionController
+  // COMMENT ENDPOINTS
+
+  async createComment(req: Request, res: Response, next: NextFunction) {
+    const { content }: { content: string } = req.body;
+    const { postId } = req.params;
+    try {
+      await postService.findPostById(postId);
+      abilityService.for(req.user).throwUnlessCan('create', 'Comment');
+      await commentService.createComment(postId, req.user as User, content);
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async deleteComment(req: Request, res: Response, next: NextFunction) {
+    const { commentId } = req.params;
+    try {
+      const comment = await commentService.findCommentById(commentId);
+      abilityService.for(req.user).throwUnlessCan('delete', comment);
+      await commentService.deleteComment(commentId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, comment });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  // REACTION ENDPOINTS
 
   async createReaction(req: Request, res: Response, next: NextFunction) {
-    const { type }: {  type: ReactionType  } = req.body;
+    const { type }: { type: ReactionType } = req.body;
     const { postId } = req.params;
     try {
       const post = await reactionService.findReactionByPostId(postId);

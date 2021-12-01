@@ -1,14 +1,14 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { userRouter, postRouter } from './routes';
+import HttpStatusCodes from 'http-status-codes';
 import { authentication, errorHandler } from './middlewares';
-import { env } from './utils';
+import { fileRouter, postRouter, userRouter } from './routes';
 
 // Create express app
 const app = express();
 
 // Get port from env
-const port = env.getPort();
+const port = 5000;
 
 // Set up JSON body parsing
 app.use(express.json());
@@ -19,15 +19,16 @@ app.options('*', cors());
 
 // Health check endpoint
 app.get('/api', (req: Request, res: Response) => {
-  res.status(200).send('API is running.');
+  res.status(HttpStatusCodes.OK).send('API is running!');
 });
 
 // Attach authentication middleware
 app.use(authentication);
 
 // Attach api routers
-app.use('/api/users', userRouter);
+app.use('/api/files', fileRouter);
 app.use('/api/posts', postRouter);
+app.use('/api/users', userRouter);
 
 // Attach error handler middleware
 app.use(errorHandler);
