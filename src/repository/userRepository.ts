@@ -7,13 +7,13 @@ class UserRepository {
   async selectById(id: string): Promise<User | undefined> {
     const query = 'select * from users where id = ?';
     const [rows] = await db.pool.execute<RowDataPacket[]>(query, [id]);
-    if (rows[0]) return new User(rows[0] as User);
+    if (rows.length > 0) return new User(rows[0] as User);
   }
 
   async selectByUsername(username: string): Promise<User | undefined> {
     const query = 'select * from users where username = ?';
     const [rows] = await db.pool.execute<RowDataPacket[]>(query, [username]);
-    if (rows[0]) return new User(rows[0] as User);
+    if (rows.length > 0) return new User(rows[0] as User);
   }
 
   async insert(id: string, type: UserType, username: string, password: string): Promise<void> {
