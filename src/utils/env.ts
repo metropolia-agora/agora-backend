@@ -7,7 +7,6 @@ const getEnvironmentVariableOrThrow = (variableName: string) => {
 };
 
 export const env = {
-  getPort: () => getEnvironmentVariableOrThrow('PORT'),
   getMariadbHost: () => getEnvironmentVariableOrThrow('MARIADB_HOST'),
   getMariadbUser: () => getEnvironmentVariableOrThrow('MARIADB_USER'),
   getMariadbPassword: () => getEnvironmentVariableOrThrow('MARIADB_PASSWORD'),

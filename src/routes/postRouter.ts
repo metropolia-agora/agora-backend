@@ -1,12 +1,10 @@
 import { Router } from 'express';
-import { body, FileTypes, param, upload, validator } from '../middlewares';
+import { body, FileTypes, fileUpload, param, validator } from '../middlewares';
 import { postControllers } from '../controllers';
 import { ReactionType } from '../entities';
 
-
 // Router to handle requests to /api/posts
 const postRouter = Router();
-
 
 // Create a new post
 postRouter.post(
@@ -14,12 +12,11 @@ postRouter.post(
   validator([
     body('content').isString().optional(),
   ]),
-  upload([FileTypes.image, FileTypes.audio, FileTypes.video]).single('file'),
+  fileUpload([FileTypes.image, FileTypes.audio, FileTypes.video]).single('file'),
   postControllers.createPost,
 );
 
-
-// Get post by id
+// Get a post
 postRouter.get(
   '/',
   validator([
@@ -28,17 +25,36 @@ postRouter.get(
   postControllers.getPost,
 );
 
-
-// Delete post
+// Delete a post
 postRouter.delete(
   '/:postId',
   validator([
     param('postId').isUUID(4),
   ]),
-  postControllers.deletePost);
+  postControllers.deletePost,
+);
 
+// Create a new comment
+postRouter.post(
+  '/:postId/comments',
+  validator([
+    param('postId').isUUID(4),
+    body('content').isString(),
+  ]),
+  postControllers.createComment,
+);
 
-// Create a new Reaction
+// Delete a comment
+postRouter.delete(
+  '/:postId/comments/:commentId',
+  validator([
+    param('postId').isUUID(4),
+    param('commentId').isUUID(4),
+  ]),
+  postControllers.deleteComment,
+);
+
+// Create a new reaction
 postRouter.post(
   '/:postId/reactions/:userId',
   validator([

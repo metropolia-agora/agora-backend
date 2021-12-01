@@ -1,6 +1,7 @@
-import { ReactionType, User } from '../entities';
-import { reactionRepository } from '../repository/reactionRepository';
+
 import { BadRequestException, NotFoundException } from '../exceptions';
+import { ReactionType, User } from '../entities';
+import { reactionRepository } from '../repository';
 
 class ReactionService {
 
@@ -19,8 +20,6 @@ class ReactionService {
     return reaction;
   }
 
-
 }
-
 
 export const reactionService = new ReactionService();

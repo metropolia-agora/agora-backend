@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validator, body, param, upload, FileTypes } from '../middlewares';
+import { body, FileTypes, fileUpload, param, validator } from '../middlewares';
 import { userControllers } from '../controllers';
 
 // Router to handle requests to /api/users
@@ -68,7 +68,7 @@ userRouter.post(
 // Update a user's profile picture
 userRouter.post(
   '/:userId/picture',
-  upload([FileTypes.image]).single('file'),
+  fileUpload([FileTypes.image]).single('file'),
   userControllers.updateUserPicture,
 );
 

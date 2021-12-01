@@ -1,33 +1,23 @@
-import { db } from '../utils';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Post } from '../entities';
+import { db } from '../utils';
 
 class PostRepository {
 
-  async insert(id: string, userId: string, content?: string, filename?: string, mimetype?: string): Promise<void> {
-    let query = 'insert into posts(id, userId, content, filename, mimetype) values(?, ?, ?, ?, ?)';
-    let values = [id, userId, content, filename, mimetype];
-
-    if (!content) {
-      query = 'insert into posts(id, userId, filename, mimetype) values(?, ?, ?, ?)';
-      values = [id, userId, filename, mimetype];
-    }
-    if (!mimetype) {
-      query = 'insert into posts(id, userId, content) values(?, ?, ?)';
-      values = [id, userId, content];
-    }
-
-    await db.pool.query(query, values);
-  }
-
   async selectById(id: string): Promise<Post | undefined> {
     const query = 'select * from posts where id = ?';
-    const result = await db.pool.query(query, [id]);
-    if (result[0]) return new Post(result[0]);
+    const [rows] = await db.pool.execute<RowDataPacket[]>(query, [id]);
+    if (rows[0]) return new Post(rows[0] as Post);
+  }
+
+  async insert(id: string, userId: string, content?: string, filename?: string): Promise<void> {
+    const query = 'insert into posts(id, userId, content, filename) values(?, ?, ?, ?)';
+    await db.pool.execute<ResultSetHeader>(query, [id, userId, content || null, filename || null]);
   }
 
   async delete(id: string): Promise<void> {
     const query = 'delete from posts where id = ?';
-    await db.pool.query(query, [id]);
+    await db.pool.execute<ResultSetHeader>(query, [id]);
   }
 
 }
