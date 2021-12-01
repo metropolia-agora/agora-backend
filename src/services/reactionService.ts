@@ -1,6 +1,6 @@
-import { Post, ReactionType, User } from '../entities';
-import { reactionRepository } from '../repository/reactionRepository';
 import { BadRequestException, NotFoundException } from '../exceptions';
+import { ReactionType, User } from '../entities';
+import { reactionRepository } from '../repository';
 
 class ReactionService {
 
@@ -18,7 +18,6 @@ class ReactionService {
     if (!reaction) throw new NotFoundException('The reaction was not found.');
     return reaction;
   }
-
 
 }
 
