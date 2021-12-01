@@ -75,14 +75,10 @@ class PostControllers {
     const { type }: { type: ReactionType } = req.body;
     const { postId } = req.params;
     try {
-      const post = await reactionService.findReactionByPostId(postId);
-      if (!post) {
-        return res.status(HttpStatusCodes.NOT_FOUND).json({ ok: false });
-      } else {
-        abilityService.for(req.user).throwUnlessCan('create', 'Reaction');
-        await reactionService.createReaction(postId, req.user as User, type);
-        return res.status(HttpStatusCodes.CREATED).json({ ok: true });
-      }
+      await postService.findPostById(postId);
+      abilityService.for(req.user).throwUnlessCan('create', 'Reaction');
+      await reactionService.createReaction(postId, req.user as User, type);
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
     } catch (error) {
       return next(error);
     }

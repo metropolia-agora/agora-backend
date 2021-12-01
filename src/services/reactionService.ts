@@ -6,16 +6,17 @@ import { reactionRepository } from '../repository';
 class ReactionService {
 
   async createReaction(postId: string, user: User, type: ReactionType): Promise<void> {
-    if (!type) {
-      throw new BadRequestException('reaction cannot be empty.');
+    const userId = user.id;
+    const reaction = await reactionRepository.select(postId, userId);
+    if (reaction) {
+      await reactionRepository.update(userId, postId, type);
     } else {
-      const userId = user.id;
       await reactionRepository.insert(userId, postId, type);
     }
   }
 
-  async findReactionByPostId(postId: string) {
-    const reaction = await reactionRepository.selectByPostId(postId);
+  async findReaction(postId: string, userId: string) {
+    const reaction = await reactionRepository.select(postId, userId);
     if (!reaction) throw new NotFoundException('The reaction was not found.');
     return reaction;
   }

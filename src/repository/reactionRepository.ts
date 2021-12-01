@@ -4,10 +4,15 @@ import { db } from '../utils';
 
 class ReactionRepository {
 
-  async selectByPostId(postId: string) {
-    const query = 'select * from reactions where postId = ?';
-    const [rows] = await db.pool.execute<RowDataPacket[]>(query, [postId]);
+  async select(postId: string, userId: string) {
+    const query = 'select * from reactions where postId = ? and userId = ?';
+    const [rows] = await db.pool.execute<RowDataPacket[]>(query, [postId, userId]);
     if (rows[0]) return new Reaction(rows[0] as Reaction);
+  }
+
+  async update(userId: string, postId: string, type: ReactionType): Promise<void> {
+    const query = 'update reactions set type = ? where userId = ? and postId = ?';
+    await db.pool.execute<ResultSetHeader>(query,[type, userId, postId]);
   }
 
   async insert(userId: string, postId: string, type: ReactionType): Promise<void> {
