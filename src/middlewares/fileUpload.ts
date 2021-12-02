@@ -10,7 +10,7 @@ export const FileTypes = {
 };
 
 // Express middleware to handle the parsing of `multipart/form-data` requests,
-// including the handling of fileUpload uploads and request body parsing.
+// including the handling of file uploads and request body parsing.
 export const fileUpload = (allowedFileTypes: string[]) => multer({
   // Set file storage options
   storage: multer.diskStorage({
@@ -22,7 +22,7 @@ export const fileUpload = (allowedFileTypes: string[]) => multer({
       callback(null, uuid4() + '.' + extension);
     },
   }),
-  // Limit the maximum fileUpload size to 10 MB
+  // Limit the maximum file size to 10 MB
   limits: { fileSize: 10485760 },
   // Filter out files that are not allowed
   fileFilter(req, file, callback) {

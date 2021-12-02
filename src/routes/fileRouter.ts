@@ -5,7 +5,7 @@ import { fileControllers } from '../controllers';
 // Router to handle requests to /api/files
 const fileRouter = Router();
 
-// Get a fileUpload by filename
+// Get a file by filename
 fileRouter.get(
   '/:filename',
   validator([
