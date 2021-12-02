@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import HttpStatusCodes from 'http-status-codes';
 import { authentication, errorHandler } from './middlewares';
-import { fileRouter, postRouter, userRouter } from './routes';
+import { feedRouter, fileRouter, postRouter, userRouter } from './routes';
 
 // Create express app
 const app = express();
@@ -26,6 +26,7 @@ app.get('/api', (req: Request, res: Response) => {
 app.use(authentication);
 
 // Attach api routers
+app.use('/api/feed', feedRouter);
 app.use('/api/files', fileRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/users', userRouter);
