@@ -64,4 +64,14 @@ postRouter.post(
   postControllers.createReaction,
 );
 
+// Delete Reaction
+postRouter.delete(
+  '/:postId/reactions/:userId',
+  validator([
+    param('postId').isUUID(4),
+    param('userId').isUUID(4),
+  ]),
+  postControllers.deleteReaction,
+);
+
 export { postRouter };

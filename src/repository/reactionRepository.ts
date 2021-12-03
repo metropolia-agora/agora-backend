@@ -21,6 +21,11 @@ class ReactionRepository {
     await db.pool.execute<ResultSetHeader>(query,[userId, postId, type]);
   }
 
+  async delete(userId: string, postId: string): Promise<void> {
+    const query = 'delete from reactions where postId = ? and userId = ?';
+    await db.pool.execute<ResultSetHeader>(query, [postId, userId]);
+  }
+
 }
 
 export const reactionRepository = new ReactionRepository();

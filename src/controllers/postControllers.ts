@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import { abilityService, commentService, postService, reactionService } from '../services';
-import {  ReactionType, User } from '../entities';
+import { Reaction, ReactionType, User } from '../entities';
 
 class PostControllers {
 
@@ -84,6 +84,19 @@ class PostControllers {
     }
   }
 
+  // Delete Reaction
+  async deleteReaction(req: Request, res: Response, next: NextFunction) {
+    const { postId } = req.params;
+    const { userId } = req.params;
+    try {
+      await reactionService.findReaction(postId, userId);
+      abilityService.for(req.user).throwUnlessCan('delete', 'Reaction' );
+      await reactionService.deleteReaction(postId, userId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export const postControllers = new PostControllers();

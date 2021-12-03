@@ -1,5 +1,5 @@
 
-import { BadRequestException, NotFoundException } from '../exceptions';
+import { NotFoundException } from '../exceptions';
 import { ReactionType, User } from '../entities';
 import { reactionRepository } from '../repository';
 
@@ -15,10 +15,14 @@ class ReactionService {
     }
   }
 
-  async findReaction(postId: string, userId: string) {
+  async findReaction(postId: string, userId: string){
     const reaction = await reactionRepository.select(postId, userId);
     if (!reaction) throw new NotFoundException('The reaction was not found.');
     return reaction;
+  }
+
+  async deleteReaction(postId: string, userId: string): Promise<void> {
+    await reactionRepository.delete(userId, postId);
   }
 
 }
