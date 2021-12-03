@@ -89,10 +89,10 @@ class PostControllers {
     const { postId } = req.params;
     const { userId } = req.params;
     try {
-      await reactionService.findReaction(postId, userId);
-      abilityService.for(req.user).throwUnlessCan('delete', 'Reaction' );
+      const reaction = await reactionService.findReaction(postId, userId);
+      abilityService.for(req.user).throwUnlessCan('delete', reaction );
       await reactionService.deleteReaction(postId, userId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true });
+      return res.status(HttpStatusCodes.OK).json({ ok: true, reaction });
     } catch (error) {
       return next(error);
     }
