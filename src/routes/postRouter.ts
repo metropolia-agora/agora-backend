@@ -18,7 +18,7 @@ postRouter.post(
 
 // Get a post
 postRouter.get(
-  '/',
+  '/:postId',
   validator([
     param('postId').isUUID(4),
   ]),
