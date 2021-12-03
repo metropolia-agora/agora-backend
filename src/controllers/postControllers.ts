@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { abilityService, commentService, postService } from '../services';
-import { User } from '../entities';
+import { abilityService, commentService, postService, reactionService } from '../services';
+import { Reaction, ReactionType, User } from '../entities';
 
 class PostControllers {
 
@@ -69,6 +69,34 @@ class PostControllers {
     }
   }
 
+  // REACTION ENDPOINTS
+
+  async createReaction(req: Request, res: Response, next: NextFunction) {
+    const { type }: { type: ReactionType } = req.body;
+    const { postId } = req.params;
+    try {
+      await postService.findPostById(postId);
+      abilityService.for(req.user).throwUnlessCan('create', 'Reaction');
+      await reactionService.createReaction(postId, req.user as User, type);
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  // Delete Reaction
+  async deleteReaction(req: Request, res: Response, next: NextFunction) {
+    const { postId } = req.params;
+    const { userId } = req.params;
+    try {
+      const reaction = await reactionService.findReaction(postId, userId);
+      abilityService.for(req.user).throwUnlessCan('delete', reaction );
+      await reactionService.deleteReaction(postId, userId);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, reaction });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export const postControllers = new PostControllers();
