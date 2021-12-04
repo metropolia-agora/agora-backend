@@ -70,6 +70,13 @@ npm run lint
 
 A GitHub action has been set up to be triggered by a push - including a pull request merge - to the `main` branch of the repository, and re-deploy the express server to the host. The database content and uploaded files will be persisted between deployments.
 
+## Generate mock data
+
+The `scripts/generate-mock-data.js` script will generate 50 random users, 200 random posts, and a random amount of comments (up to 10) and reactions (up to 50) for each post. The script can be executed by running
+```bash
+npm run gen-mock-data
+```
+
 ## API documentation
 
 For an exhaustive list of all available API endpoints, authorization information, request and response parameters, as well as request and response samples view the API documentation written in OpenAPI 3 format at `docs/api.yaml`. To run a user-friendly API documentation server using `redoc-cli` run the following command:
