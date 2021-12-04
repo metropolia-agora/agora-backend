@@ -1,15 +1,29 @@
-import faker from 'faker';
-import { v4 as uuid4 } from 'uuid';
-import bcrypt from 'bcrypt';
-import { ReactionType, UserType } from '../src/entities';
-import { db } from '../src/utils';
+const faker = require('faker');
+const { v4: uuid4 } = require('uuid');
+const bcrypt = require('bcrypt');
+const mysql = require('mysql2/promise');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const pool = mysql.createPool({
+  host: process.env.MARIADB_HOST,
+  user: process.env.MARIADB_USER,
+  password: process.env.MARIADB_PASSWORD,
+  database: process.env.MARIADB_DATABASE,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
+
+const db = Object.freeze({ pool });
 
 const user_count = 50;
 const post_count = 200;
 const max_comment_count = 10;
 const max_reaction_count = 50;
 
-const userIds: string[] = [];
+const userIds = [];
 
 const generateRandomImageUrl = () => {
   const width = Math.floor(Math.random() * 600);
@@ -17,13 +31,13 @@ const generateRandomImageUrl = () => {
   return `https://picsum.photos/${width}/${height}`;
 };
 
-const generateUsers = async (count: number) => {
+const generateUsers = async (count) => {
   for (let i = 0; i < count; i++) {
     const hasProfilePicture = Math.random() <= 0.7;
     const timestamp = faker.date.past();
     const user = {
       id: uuid4(),
-      type: UserType.regular,
+      type: 1,
       username: faker.internet.userName(),
       password: await bcrypt.hash(faker.internet.password(20, false), 10),
       filename: hasProfilePicture ? generateRandomImageUrl() : null,
@@ -31,13 +45,12 @@ const generateUsers = async (count: number) => {
       updatedAt: timestamp,
     };
     userIds.push(user.id);
-    // eslint-disable-next-line max-len
     const query = 'insert into users(id, type, username, password, filename, createdAt, updatedAt) values (?, ?, ?, ?, ?, ?, ?)';
     await db.pool.execute(query, Object.values(user));
   }
 };
 
-const generatePosts = async (count: number) => {
+const generatePosts = async (count) => {
   for (let i = 0; i < count; i++) {
     const hasTextContent = Math.random() < 0.7;
     const hasFileContent = Math.random() < 0.5 || !hasTextContent;
@@ -60,7 +73,7 @@ const generatePosts = async (count: number) => {
   }
 };
 
-const generateCommentsForPost = async (postId: string, postOwnerId: string, postCreatedAt: Date, count: number) => {
+const generateCommentsForPost = async (postId, postOwnerId, postCreatedAt, count) => {
   for (let i = 0; i < count; i++) {
     const ownerId = userIds.filter(id => id !== postOwnerId)[Math.floor(Math.random() * (userIds.length - 1))];
     const timestamp = faker.date.between(postCreatedAt, new Date());
@@ -77,8 +90,8 @@ const generateCommentsForPost = async (postId: string, postOwnerId: string, post
   }
 };
 
-const generateReactionsForPost = async (postId: string, postOwnerId: string, postCreatedAt: Date, count: number) => {
-  const cannotReact: string[] = [postOwnerId];
+const generateReactionsForPost = async (postId, postOwnerId, postCreatedAt, count) => {
+  const cannotReact = [postOwnerId];
   for (let i = 0; i < count; i++) {
     const canReact = userIds.filter(id => !cannotReact.includes(id));
     const ownerId = canReact[Math.floor(Math.random() * (canReact.length - 1))];
@@ -88,7 +101,7 @@ const generateReactionsForPost = async (postId: string, postOwnerId: string, pos
     const reaction = {
       postId,
       userId: ownerId,
-      type: isUpvote ? ReactionType.Upvote : ReactionType.Downvote,
+      type: isUpvote ? 1 : -1,
       createdAt: timestamp,
       updatedAt: timestamp,
     };

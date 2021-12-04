@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --fix --ext .ts && tsc --noEmit",
     "api": "npx -y redoc-cli serve docs/api.yaml",
     "api:dev": "npx -y redoc-cli serve docs/api.yaml --watch",
-    "gen-mock-data": "ts-node scripts/generate-mock-data.ts"
+    "gen-mock-data": "node scripts/generate-mock-data.js"
   },
   "engines": {
     "node": ">=16.0.0",
