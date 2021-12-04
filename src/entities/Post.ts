@@ -3,7 +3,6 @@ export class Post {
   userId: string;
   content?: string;
   filename?: string;
-  mimetype?: string;
   createdAt: Date;
   updatedAt: Date;
 
