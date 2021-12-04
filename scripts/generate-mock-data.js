@@ -26,8 +26,8 @@ const max_reaction_count = 50;
 const userIds = [];
 
 const generateRandomImageUrl = () => {
-  const width = Math.floor(Math.random() * 600);
-  const height = Math.floor(Math.random() * 600);
+  const width = Math.floor(Math.random() * 300) + 200;
+  const height = Math.floor(Math.random() * 300) + 200;
   return `https://picsum.photos/${width}/${height}`;
 };
 
