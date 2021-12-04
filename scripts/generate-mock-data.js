@@ -33,7 +33,7 @@ const generateRandomImageUrl = () => {
 
 const generateUsers = async (count) => {
   for (let i = 0; i < count; i++) {
-    const hasProfilePicture = Math.random() <= 0.7;
+    const hasProfilePicture = Math.random() <= 0.9;
     const timestamp = faker.date.past();
     const user = {
       id: uuid4(),
