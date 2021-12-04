@@ -3,7 +3,6 @@ export enum ReactionType {
   Downvote = -1
 }
 
-
 export class Reaction {
   userId: string;
   postId: string;

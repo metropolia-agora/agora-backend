@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import { abilityService, commentService, postService, reactionService } from '../services';
-import { Reaction, ReactionType, User } from '../entities';
+import { ReactionType, User } from '../entities';
 
 class PostControllers {
 
