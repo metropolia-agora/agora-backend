@@ -1,6 +1,5 @@
-
-import { NotFoundException } from '../exceptions';
 import { ReactionType, User } from '../entities';
+import { NotFoundException } from '../exceptions';
 import { reactionRepository } from '../repository';
 
 class ReactionService {

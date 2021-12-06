@@ -5,36 +5,42 @@ import { db } from '../utils';
 class PostRepository {
 
   // Selects the specifically wanted post by its id if found.
-  async selectById(id: string): Promise<Post | undefined> {
+  async selectById(id: string, checkReactionsForUserId?: string): Promise<Post | undefined> {
     const query = `
       select
         p.*,
         u.id as ownerId, u.username as ownerUsername, u.filename as ownerFilename,
         (select count(c.id) from comments c where c.postId = p.id) as commentCount,
         (select count(r.postId) from reactions r where r.postId = p.id and r.type = 1) as upvoteCount,
-        (select count(r.postId) from reactions r where r.postId = p.id and r.type = -1) as downvoteCount
+        (select count(r.postId) from reactions r where r.postId = p.id and r.type = -1) as downvoteCount,
+        exists(select r.postId from reactions r where r.postId = p.id and r.userId = ? and r.type = 1) as hasUpvoted,
+        exists(select r.postId from reactions r where r.postId = p.id and r.userId = ? and r.type = -1) as hasDownvoted
       from posts p
         left outer join users u on u.id = p.userId
       where p.id = ?;
     `;
-    const [rows] = await db.pool.execute<RowDataPacket[]>(query, [id]);
+    const values = [checkReactionsForUserId || null, checkReactionsForUserId || null, id];
+    const [rows] = await db.pool.execute<RowDataPacket[]>(query, values);
     if (rows.length > 0) return new Post(rows[0] as Post);
   }
 
   // Selects max 10 most recent posts. Where post's createdAt < lastDate.
-  async selectRecent(lastDate: Date): Promise<Post[]> {
+  async selectRecent(lastDate: Date, checkReactionsForUserId?: string): Promise<Post[]> {
     const query = `
       select
         p.*,
         u.id as ownerId, u.username as ownerUsername, u.filename as ownerFilename,
         (select count(c.id) from comments c where c.postId = p.id) as commentCount,
         (select count(r.postId) from reactions r where r.postId = p.id and r.type = 1) as upvoteCount,
-        (select count(r.postId) from reactions r where r.postId = p.id and r.type = -1) as downvoteCount
+        (select count(r.postId) from reactions r where r.postId = p.id and r.type = -1) as downvoteCount,
+        exists(select r.postId from reactions r where r.postId = p.id and r.userId = ? and r.type = 1) as hasUpvoted,
+        exists(select r.postId from reactions r where r.postId = p.id and r.userId = ? and r.type = -1) as hasDownvoted
       from posts p
         left outer join users u on u.id = p.userId
       where p.createdAt < ? order by p.createdAt desc limit 10;
     `;
-    const [rows] = await db.pool.execute<RowDataPacket[]>(query, [lastDate]);
+    const values = [checkReactionsForUserId || null, checkReactionsForUserId || null, lastDate];
+    const [rows] = await db.pool.execute<RowDataPacket[]>(query, values);
     return rows.map(post => new Post(post as Post));
   }
 

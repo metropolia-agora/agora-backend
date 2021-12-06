@@ -9,7 +9,7 @@ class FeedControllers {
     const lastDate = new Date(req.query.lastDate as string);
     try {
       abilityService.for(req.user).throwUnlessCan('read', 'Post');
-      const posts = await postService.findRecentPosts(lastDate);
+      const posts = await postService.findRecentPosts(lastDate, req.user.id);
       return res.status(HttpStatusCodes.OK).json({ ok: true, posts });
     } catch (error) {
       return next(error);

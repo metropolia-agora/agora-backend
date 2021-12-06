@@ -6,6 +6,8 @@ export enum UserType {
 }
 
 export class AnonymousUser {
+  // UUIDv4 universally unique identifier (undefined)
+  id: undefined;
   // User type (anonymous)
   type: UserType.anonymous;
 
