@@ -17,6 +17,10 @@ export class Post {
   downvoteCount: number;
   // Number of comments on the post (virtual column)
   commentCount: number;
+  // Has the current user upvoted the post (virtual column)
+  hasUpvoted: boolean;
+  // Has the current user downvoted the post (virtual column)
+  hasDownvoted: boolean;
   // UUIDv4 of the user who owns the post (virtual column)
   ownerId: string;
   // Username of the user who owns the post (virtual column)
@@ -25,6 +29,10 @@ export class Post {
   ownerFilename?: string;
 
   constructor(data: Post) {
-    Object.assign(this, data);
+    const { hasUpvoted, hasDownvoted, ...rest } = data;
+    Object.assign(this, rest);
+    // Workaround to convert 0 and 1 returned from the database into booleans
+    this.hasUpvoted = !!(hasUpvoted as unknown);
+    this.hasDownvoted = !!(hasDownvoted as unknown);
   }
 }

@@ -20,7 +20,7 @@ class PostControllers {
   async getPost(req: Request, res: Response, next: NextFunction) {
     const { postId } = req.params;
     try {
-      const post = await postService.findPostById(postId);
+      const post = await postService.findPostById(postId, req.user.id);
       const comments = await commentService.findAllCommentsOfPost(postId);
       abilityService.for(req.user).throwUnlessCan('read', post);
       abilityService.for(req.user).throwUnlessCan('read', 'Comment');
@@ -35,14 +35,12 @@ class PostControllers {
     try {
       const post = await postService.findPostById(postId);
       abilityService.for(req.user).throwUnlessCan('delete', post);
-      await postService.deletePost(postId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, post });
+      await postService.deletePost(post);
+      return res.status(HttpStatusCodes.OK).json({ ok: true });
     } catch (error) {
       return next(error);
     }
   }
-
-  // COMMENT ENDPOINTS
 
   async createComment(req: Request, res: Response, next: NextFunction) {
     const { content }: { content: string } = req.body;
@@ -63,13 +61,11 @@ class PostControllers {
       const comment = await commentService.findCommentById(commentId);
       abilityService.for(req.user).throwUnlessCan('delete', comment);
       await commentService.deleteComment(commentId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, comment });
+      return res.status(HttpStatusCodes.OK).json({ ok: true });
     } catch (error) {
       return next(error);
     }
   }
-
-  // REACTION ENDPOINTS
 
   async createReaction(req: Request, res: Response, next: NextFunction) {
     const { type }: { type: ReactionType } = req.body;
@@ -84,15 +80,13 @@ class PostControllers {
     }
   }
 
-  // Delete Reaction
   async deleteReaction(req: Request, res: Response, next: NextFunction) {
-    const { postId } = req.params;
-    const { userId } = req.params;
+    const { userId, postId } = req.params;
     try {
       const reaction = await reactionService.findReaction(postId, userId);
-      abilityService.for(req.user).throwUnlessCan('delete', reaction );
+      abilityService.for(req.user).throwUnlessCan('delete', reaction);
       await reactionService.deleteReaction(postId, userId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, reaction });
+      return res.status(HttpStatusCodes.OK).json({ ok: true });
     } catch (error) {
       return next(error);
     }
