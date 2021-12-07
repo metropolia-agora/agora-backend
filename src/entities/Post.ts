@@ -21,7 +21,7 @@ export class Post {
   hasUpvoted: boolean;
   // Has the current user downvoted the post (virtual column)
   hasDownvoted: boolean;
-  // UUIDv4 of the user who owns the post (virtual column)
+  // UUIDv4 of the user who owns the post, alias for userId (virtual column)
   ownerId: string;
   // Username of the user who owns the post (virtual column)
   ownerUsername: string;
