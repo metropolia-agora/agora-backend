@@ -56,6 +56,25 @@ class PostRepository {
     await db.pool.execute<ResultSetHeader>(query, [id]);
   }
 
+  async selectByUserId(userId: string, checkReactionsForUserId?: string): Promise<Post[]> {
+    const query = `
+      select
+        p.*,
+        u.id as ownerId, u.username as ownerUsername, u.filename as ownerFilename,
+        (select count(c.id) from comments c where c.postId = p.id) as commentCount,
+        (select count(r.postId) from reactions r where r.postId = p.id and r.type = 1) as upvoteCount,
+        (select count(r.postId) from reactions r where r.postId = p.id and r.type = -1) as downvoteCount,
+        exists(select r.postId from reactions r where r.postId = p.id and r.userId = ? and r.type = 1) as hasUpvoted,
+        exists(select r.postId from reactions r where r.postId = p.id and r.userId = ? and r.type = -1) as hasDownvoted
+      from posts p
+        left outer join users u on u.id = p.userId
+      where p.userId = ?;
+    `;
+    const values = [checkReactionsForUserId || null, checkReactionsForUserId || null, userId];
+    const [rows] = await db.pool.execute<RowDataPacket[]>(query, values);
+    return rows.map(post => new Post(post as Post));
+  }
+
 }
 
 export const postRepository = new PostRepository();

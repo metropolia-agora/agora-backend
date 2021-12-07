@@ -38,6 +38,13 @@ class PostService {
     await postRepository.delete(post.id);
   }
 
+  // Returns all posts selected by its user's id if found.
+  async findPostsByUserId(id: string, checkReactionsForUserId?: string) {
+    const post = await postRepository.selectByUserId(id, checkReactionsForUserId);
+    if (!post) throw new NotFoundException('The posts are not found.');
+    return post;
+  }
+
 }
 
 export const postService = new PostService();
