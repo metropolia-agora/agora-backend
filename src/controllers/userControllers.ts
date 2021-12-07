@@ -97,6 +97,7 @@ class UserControllers {
   async getUserPosts(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
     try {
+      await userService.findUserById(userId);
       const posts = await postService.findPostsByUserId(userId, req.user.id);
       abilityService.for(req.user).throwUnlessCan('read', 'Post');
       return res.status(HttpStatusCodes.OK).json({ ok: true, posts });

@@ -73,14 +73,12 @@ userRouter.post(
 );
 
 // Get posts by user
-
 userRouter.get(
   '/:userId/posts',
   validator([
     param('userId').isUUID(4),
   ]),
   userControllers.getUserPosts,
-
 );
 
 export { userRouter };
