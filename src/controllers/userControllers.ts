@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { abilityService, userService } from '../services';
+import { abilityService, postService, userService } from '../services';
 
 class UserControllers {
 
@@ -89,6 +89,18 @@ class UserControllers {
       await userService.updatePicture(user, newPicture);
       const updatedUser = await userService.findUserById(userId);
       return res.status(HttpStatusCodes.OK).json({ ok: true, user: updatedUser });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async getUserPosts(req: Request, res: Response, next: NextFunction) {
+    const { userId } = req.params;
+    try {
+      await userService.findUserById(userId);
+      const posts = await postService.findPostsByUserId(userId, req.user.id);
+      abilityService.for(req.user).throwUnlessCan('read', 'Post');
+      return res.status(HttpStatusCodes.OK).json({ ok: true, posts });
     } catch (error) {
       return next(error);
     }

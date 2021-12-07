@@ -18,6 +18,11 @@ class PostService {
     return await postRepository.selectRecent(lastDate, checkReactionsForUserId);
   }
 
+  // Returns all posts selected by its user's id if found.
+  async findPostsByUserId(id: string, checkReactionsForUserId?: string) {
+    return await postRepository.selectByUserId(id, checkReactionsForUserId);
+  }
+
   // Creates a new post. Creating an empty post will not be possible.
   async createPost(user: User, content?: string, file?: Express.Multer.File) {
     if (!content && !file) {
