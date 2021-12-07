@@ -5,13 +5,21 @@ import { db } from '../utils';
 class CommentRepository {
 
   async selectById(id: string): Promise<Comment | undefined> {
-    const query = 'select * from comments where id = ?';
+    const query = `
+      select c.*, u.id as ownerId, u.username as ownerUsername, u.filename as ownerFilename
+      from comments c left join users u on u.id = c.userId
+      where c.id = ?;
+    `;
     const [rows] = await db.pool.execute<RowDataPacket[]>(query, [id]);
     if (rows.length > 0) return new Comment(rows[0] as Comment);
   }
 
-  async selectAllByPostId(postId: string): Promise<Comment[] | undefined> {
-    const query = 'select * from comments where postId = ?';
+  async selectAllByPostId(postId: string): Promise<Comment[]> {
+    const query = `
+      select c.*, u.id as ownerId, u.username as ownerUsername, u.filename as ownerFilename
+      from comments c left join users u on u.id = c.userId
+      where c.postId = ?;
+    `;
     const [rows] = await db.pool.execute<RowDataPacket[]>(query, [postId]);
     return rows.map(comment => new Comment(comment as Comment));
   }

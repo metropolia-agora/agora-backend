@@ -11,6 +11,12 @@ export class Comment {
   createdAt: Date;
   // Date of last modification
   updatedAt: Date;
+  // UUIDv4 of the user who owns the comment, alias for userId (virtual column)
+  ownerId: string;
+  // Username of the user who owns the comment (virtual column)
+  ownerUsername: string;
+  // Filename of the profile picture of the user who owns the comment (virtual column)
+  ownerFilename?: string;
 
   constructor(data: Comment) {
     Object.assign(this, data);
