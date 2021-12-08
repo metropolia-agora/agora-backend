@@ -6,9 +6,9 @@ export enum UserType {
 }
 
 export class AnonymousUser {
-  // UUIDv4 universally unique identifier (undefined)
+  // UUIDv4 of the user (always undefined)
   id: undefined;
-  // User type (anonymous)
+  // User type (always anonymous)
   type: UserType.anonymous;
 
   constructor() {
@@ -17,7 +17,7 @@ export class AnonymousUser {
 }
 
 export class User {
-  // UUIDv4 universally unique identifier
+  // UUIDv4 of the user
   id: string;
   // User type (regular or moderator)
   type: UserType.regular | UserType.moderator;
@@ -25,7 +25,7 @@ export class User {
   username: string;
   // Hashed password
   password: string;
-  // Optional filename of the profile picture
+  // The filename of the profile picture
   filename?: string;
   // Date of creation
   createdAt: Date;
