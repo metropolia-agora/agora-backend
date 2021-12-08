@@ -21,7 +21,7 @@ class PostControllers {
     const { postId } = req.params;
     try {
       const post = await postService.findPostById(postId, req.user.id);
-      const comments = await commentService.findAllCommentsOfPost(postId);
+      const comments = await commentService.findCommentsByPostId(postId);
       abilityService.for(req.user).throwUnlessCan('read', post);
       abilityService.for(req.user).throwUnlessCan('read', 'Comment');
       return res.status(HttpStatusCodes.OK).json({ ok: true, post, comments });
@@ -46,10 +46,10 @@ class PostControllers {
     const { content }: { content: string } = req.body;
     const { postId } = req.params;
     try {
-      await postService.findPostById(postId);
+      const post = await postService.findPostById(postId);
       abilityService.for(req.user).throwUnlessCan('create', 'Comment');
-      await commentService.createComment(postId, req.user as User, content);
-      return res.status(HttpStatusCodes.CREATED).json({ ok: true });
+      const comment = await commentService.createComment(post.id, req.user as User, content);
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true, comment });
     } catch (error) {
       return next(error);
     }
