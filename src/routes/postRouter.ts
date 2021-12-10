@@ -12,7 +12,7 @@ postRouter.post(
   validator([
     body('content').isString().optional(),
   ]),
-  fileUpload([FileTypes.image, FileTypes.audio, FileTypes.video]).single('file'),
+  fileUpload([FileTypes.image]).single('file'),
   postControllers.createPost,
 );
 
