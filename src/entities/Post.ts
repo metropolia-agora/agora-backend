@@ -4,9 +4,9 @@ export class Post {
   // UUIDv4 of the user who created the post
   userId: string;
   // The text content of the post
-  content?: string;
+  content?: string | null;
   // The filename of the file belonging to the post
-  filename?: string;
+  filename?: string | null;
   // Date of creation
   createdAt: Date;
   // Date of last modification
@@ -26,7 +26,7 @@ export class Post {
   // Username of the user who owns the post (virtual column)
   ownerUsername: string;
   // Filename of the profile picture of the user who owns the post (virtual column)
-  ownerFilename?: string;
+  ownerFilename?: string | null;
 
   constructor(data: Post) {
     const { hasUpvoted, hasDownvoted, ...rest } = data;

@@ -16,7 +16,7 @@ export class Comment {
   // Username of the user who owns the comment (virtual column)
   ownerUsername: string;
   // Filename of the profile picture of the user who owns the comment (virtual column)
-  ownerFilename?: string;
+  ownerFilename?: string | null;
 
   constructor(data: Comment) {
     Object.assign(this, data);

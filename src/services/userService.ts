@@ -104,14 +104,11 @@ class UserService {
 
   // Update the profile picture of a user
   async updatePicture(user: User, file?: Express.Multer.File): Promise<void> {
-    if (!file) {
-      throw new BadRequestException('The profile picture is missing.');
-    } else {
-      if (user.filename) {
-        await fs.rm(`uploads/${user.filename}`, { force: true });
-      }
-      await userRepository.update(user.id, { filename: file.filename });
+    const filename = file?.filename || null;
+    if (user.filename) {
+      await fs.rm(`uploads/${user.filename}`, { force: true });
     }
+    await userRepository.update(user.id, { filename });
   }
 
   // Validate a username, returns the error

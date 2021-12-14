@@ -68,6 +68,9 @@ userRouter.post(
 // Update a user's profile picture
 userRouter.post(
   '/:userId/picture',
+  validator([
+    param('userId').isUUID(4),
+  ]),
   fileUpload([FileTypes.image]).single('file'),
   userControllers.updateUserPicture,
 );
