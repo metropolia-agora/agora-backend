@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import HttpStatusCodes from 'http-status-codes';
 import { authentication, errorHandler } from './middlewares';
@@ -16,6 +16,12 @@ app.use(express.json());
 // Enable CORS and pre-flight checks for all routes
 app.use(cors());
 app.options('*', cors());
+
+// Disable caching
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('Cache-Control', 'no-store');
+  next();
+});
 
 // Health check endpoint
 app.get('/api', (req: Request, res: Response) => {
