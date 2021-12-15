@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "npm run dev",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --signal SIGTERM src/server.ts",
     "prod": "npm run build && node dist/server.js",
     "build": "rimraf dist && tsc",
     "lint": "eslint . --ext .ts && tsc --noEmit",
@@ -23,6 +23,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.13.0",
+    "helmet": "^4.6.0",
     "http-status-codes": "^2.1.4",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",

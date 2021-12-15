@@ -18,7 +18,7 @@ class CommentRepository {
     const query = `
       select c.*, u.id as ownerId, u.username as ownerUsername, u.filename as ownerFilename
       from comments c left join users u on u.id = c.userId
-      where c.postId = ?;
+      where c.postId = ? order by c.createdAt desc;
     `;
     const [rows] = await db.pool.execute<RowDataPacket[]>(query, [postId]);
     return rows.map(comment => new Comment(comment as Comment));

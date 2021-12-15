@@ -27,6 +27,8 @@ jobs:
             cat > .env<< EOF
             # jsonwebtoken secret
             JWT_SECRET="${{ secrets.JWT_TOKEN }}"
+            # frontend url
+            FRONTEND_URL="http://${{ secrets.SSH_SERVER_HOSTNAME }}:3000"
             # mariadb connection credentials
             MARIADB_HOST="${{ secrets.MARIADB_HOSTNAME }}"
             MARIADB_USER="${{ secrets.MARIADB_USERNAME }}"

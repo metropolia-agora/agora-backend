@@ -29,6 +29,8 @@ npm install
 ```bash
 # jsonwebtoken secret
 JWT_SECRET=""
+# frontend url
+FRONTEND_URL="http://localhost:3000"
 # mariadb connection credentials
 MARIADB_HOST="127.0.0.1"
 MARIADB_USER="root"
@@ -37,7 +39,9 @@ MARIADB_DATABASE="agora"
 ```
 \*The jsonwebtoken secret is recommended to be a random-generated 32 character long string that includes upper and lower case characters, numbers, as well as symbols. Any random string or password generator can be used, such as [this](https://randompasswordgen.com/).
 
-**4.** Start the server in development mode with hot-reloading enabled
+**4.** Prepare the database by executing the SQL setup script that can be found at `docs/setup.sql`. This will create the database `agora` and all the necessary tables and indexes.
+
+**5.** Start the server in development mode with hot-reloading enabled
 ```bash
 npm run dev
 ```
@@ -46,24 +50,25 @@ or alternatively
 npm start
 ```
 
-**5a. (optional)** Create a production build
+**6a. (optional)** Create a production build
 ```bash
 npm run build
 ```
 
-**5b. (optional)** Start the server in production mode
+**6b. (optional)** Start the server in production mode
 ```bash
 npm run prod
 ```
 
-**6.** Access the API using any client (e.g. Postman) at
+**7.** Access the API using any client (e.g. Postman) at
 ```bash
 http://localhost:5000/api
 ```
 
-**7. (optional)** Run ESLint code style check at any time during development
+**8. (optional)** Run ESLint code style check at any time during development. Use the `:fix` suffix to fix issues that ESLint can automatically fix.
 ```bash
 npm run lint
+npm run lint:fix
 ```
 
 ## CI/CD

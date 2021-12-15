@@ -9,7 +9,8 @@ class UserControllers {
     try {
       const user = await userService.authenticate(username, password);
       const token = await userService.generateToken(user);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, user, token });
+      const sanitizedUser = userService.getSanitizedUserData(user);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: sanitizedUser, token });
     } catch (error) {
       return next(error);
     }
@@ -22,7 +23,8 @@ class UserControllers {
       await userService.createUser(username, password);
       const user = await userService.findUserByUsername(username);
       const token = await userService.generateToken(user);
-      return res.status(HttpStatusCodes.CREATED).json({ ok: true, user, token });
+      const sanitizedUser = userService.getSanitizedUserData(user);
+      return res.status(HttpStatusCodes.CREATED).json({ ok: true, user: sanitizedUser, token });
     } catch (error) {
       return next(error);
     }
@@ -33,7 +35,8 @@ class UserControllers {
     try {
       const user = await userService.findUserById(userId);
       abilityService.for(req.user).throwUnlessCan('read', user);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, user });
+      const sanitizedUser = userService.getSanitizedUserData(user);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: sanitizedUser });
     } catch (error) {
       return next(error);
     }
@@ -59,8 +62,9 @@ class UserControllers {
       const user = await userService.findUserById(userId);
       abilityService.for(req.user).throwUnlessCan('update', user);
       await userService.updateUsername(user, username);
-      const updatedUser = await userService.findUserById(userId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, user: updatedUser });
+      const updatedUser = await userService.findUserById(user.id);
+      const sanitizedUser = userService.getSanitizedUserData(updatedUser);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: sanitizedUser });
     } catch (error) {
       return next(error);
     }
@@ -73,8 +77,9 @@ class UserControllers {
       const user = await userService.findUserById(userId);
       abilityService.for(req.user).throwUnlessCan('update', user);
       await userService.updatePassword(user, newPassword, currentPassword);
-      const updatedUser = await userService.findUserById(userId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, user: updatedUser });
+      const updatedUser = await userService.findUserById(user.id);
+      const sanitizedUser = userService.getSanitizedUserData(updatedUser);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: sanitizedUser });
     } catch (error) {
       return next(error);
     }
@@ -88,7 +93,8 @@ class UserControllers {
       abilityService.for(req.user).throwUnlessCan('update', user);
       await userService.updatePicture(user, newPicture);
       const updatedUser = await userService.findUserById(userId);
-      return res.status(HttpStatusCodes.OK).json({ ok: true, user: updatedUser });
+      const sanitizedUser = userService.getSanitizedUserData(updatedUser);
+      return res.status(HttpStatusCodes.OK).json({ ok: true, user: sanitizedUser });
     } catch (error) {
       return next(error);
     }
@@ -97,8 +103,8 @@ class UserControllers {
   async getUserPosts(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
     try {
-      await userService.findUserById(userId);
-      const posts = await postService.findPostsByUserId(userId, req.user.id);
+      const user = await userService.findUserById(userId);
+      const posts = await postService.findPostsByUserId(user.id, req.user.id);
       abilityService.for(req.user).throwUnlessCan('read', 'Post');
       return res.status(HttpStatusCodes.OK).json({ ok: true, posts });
     } catch (error) {

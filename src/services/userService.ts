@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import validator from 'validator';
 import { v4 as uuid4 } from 'uuid';
 import { promises as fs } from 'fs';
-import { userRepository } from '../repository';
+import { postRepository, userRepository } from '../repository';
 import { User, UserType } from '../entities';
 import { BadRequestException, NotFoundException } from '../exceptions';
 import { env } from '../utils';
@@ -73,6 +73,11 @@ class UserService {
     if (!doPasswordsMatch) {
       throw new BadRequestException('The password is incorrect.');
     } else {
+      const filenamesToDelete = await postRepository.selectFilenamesByUserId(user.id);
+      if (user.filename) filenamesToDelete.push(user.filename);
+      await Promise.all(filenamesToDelete.map(filename => {
+        return fs.rm(`uploads/${filename}`, { force: true });
+      }));
       await userRepository.delete(user.id);
     }
   }
@@ -109,6 +114,12 @@ class UserService {
       await fs.rm(`uploads/${user.filename}`, { force: true });
     }
     await userRepository.update(user.id, { filename });
+  }
+
+  // Sanitize user data
+  getSanitizedUserData(user: User): Omit<User, 'password'> {
+    const { password, ...rest } = user;
+    return rest;
   }
 
   // Validate a username, returns the error
