@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import path from 'path';
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 
 class FileControllers {
 
