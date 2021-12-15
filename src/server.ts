@@ -41,12 +41,4 @@ app.use('/api/users', userRouter);
 app.use(errorHandler);
 
 // Start listening to incoming requests
-const server = app.listen(port, () => console.log(`Server listening on port ${port}.`));
-
-// Handle shutdown
-process.on('SIGINT', () => {
-  server.close(() => {
-    console.log('Server shutting down.');
-    process.exit(0);
-  });
-});
+app.listen(port, () => console.log(`Server listening on port ${port}.`));

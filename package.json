@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "npm run dev",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --signal SIGTERM src/server.ts",
     "prod": "npm run build && node dist/server.js",
     "build": "rimraf dist && tsc",
     "lint": "eslint . --ext .ts && tsc --noEmit",
