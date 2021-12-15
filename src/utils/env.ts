@@ -7,9 +7,10 @@ const getEnvironmentVariableOrThrow = (variableName: string) => {
 };
 
 export const env = {
+  getJwtSecret: () => getEnvironmentVariableOrThrow('JWT_SECRET'),
+  getFrontendUrl: () => getEnvironmentVariableOrThrow('FRONTEND_URL'),
   getMariadbHost: () => getEnvironmentVariableOrThrow('MARIADB_HOST'),
   getMariadbUser: () => getEnvironmentVariableOrThrow('MARIADB_USER'),
   getMariadbPassword: () => getEnvironmentVariableOrThrow('MARIADB_PASSWORD'),
   getMariadbDatabase: () => getEnvironmentVariableOrThrow('MARIADB_DATABASE'),
-  getJwtSecret: () => getEnvironmentVariableOrThrow('JWT_SECRET'),
 };

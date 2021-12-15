@@ -1,8 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express';
+import helmet from 'helmet';
 import cors from 'cors';
 import HttpStatusCodes from 'http-status-codes';
 import { authentication, errorHandler } from './middlewares';
 import { feedRouter, fileRouter, postRouter, userRouter } from './routes';
+import { env } from './utils';
 
 // Create express app
 const app = express();
@@ -13,11 +15,15 @@ const port = 5000;
 // Set up JSON body parsing
 app.use(express.json());
 
-// Enable CORS and pre-flight checks for all routes
-app.use(cors());
-app.options('*', cors());
+// Enable helmet
+app.use(helmet());
 
-// Disable caching
+// Enable CORS and pre-flight checks for all routes
+const origin = env.getFrontendUrl();
+app.use(cors({ origin }));
+app.options('*', cors({ origin }));
+
+// Disable http caching
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader('Cache-Control', 'no-store');
   next();

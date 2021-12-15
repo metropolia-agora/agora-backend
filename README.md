@@ -29,6 +29,8 @@ npm install
 ```bash
 # jsonwebtoken secret
 JWT_SECRET=""
+# frontend url
+FRONTEND_URL="http://localhost:3000"
 # mariadb connection credentials
 MARIADB_HOST="127.0.0.1"
 MARIADB_USER="root"
