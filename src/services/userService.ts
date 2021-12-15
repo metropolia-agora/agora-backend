@@ -111,6 +111,12 @@ class UserService {
     await userRepository.update(user.id, { filename });
   }
 
+  // Sanitize user data
+  getSanitizedUserData(user: User): Omit<User, 'password'> {
+    const { password, ...rest } = user;
+    return rest;
+  }
+
   // Validate a username, returns the error
   private static async validateUsername(username: string): Promise<string | undefined> {
     const found = await userRepository.selectByUsername(username);
