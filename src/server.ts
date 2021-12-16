@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from 'express';
-import helmet from 'helmet';
 import cors from 'cors';
 import HttpStatusCodes from 'http-status-codes';
 import { authentication, errorHandler } from './middlewares';
@@ -14,9 +13,6 @@ const port = 5000;
 
 // Set up JSON body parsing
 app.use(express.json());
-
-// Enable helmet
-app.use(helmet());
 
 // Enable CORS and pre-flight checks for all routes
 const origin = env.getFrontendUrl();
