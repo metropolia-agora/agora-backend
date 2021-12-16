@@ -81,18 +81,3 @@ The `scripts/generate-mock-data.js` script will generate 50 random users, 200 ra
 ```bash
 npm run gen-mock-data
 ```
-
-## API documentation
-
-For an exhaustive list of all available API endpoints, authorization information, request and response parameters, as well as request and response samples view the API documentation written in OpenAPI 3 format at `docs/api.yaml`. To run a user-friendly API documentation server using `redoc-cli` run the following command:
-```bash
-npm run api
-```
-To run the API documentation server in watch mode (no hot-reloading supported, refresh manually) run:
-```bash
-npm run api:dev
-```
-To view the API documentation server in the browser open
-```bash  
-http://localhost:8080/  
-```
